@@ -63,6 +63,7 @@ function DupeFinder() {
           <SearchBar
             placeholder="Try 'Baccarat Rouge 540' or 'Tom Ford Oud Wood'..."
             onSearch={handleSearch}
+            initialValue={initialQuery}
           />
         </div>
 

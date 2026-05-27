@@ -8,6 +8,7 @@ function Browse() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [perfumes, setPerfumes] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const [filters, setFilters] = useState({
     category: searchParams.get('category') || '',
     brand: searchParams.get('brand') || '',
@@ -21,11 +22,13 @@ function Browse() {
 
   const fetchPerfumes = async () => {
     setLoading(true)
+    setError('')
     try {
       const response = await api.getPerfumes(filters)
       setPerfumes(response.data)
     } catch (error) {
       console.error('Error fetching perfumes:', error)
+      setError('Unable to load the collection. Make sure the API is deployed and VITE_API_URL is set correctly.')
     } finally {
       setLoading(false)
     }
@@ -55,16 +58,28 @@ function Browse() {
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
-          <aside className="lg:w-72 flex-shrink-0">
+          <aside className="lg:w-72 shrink-0">
             <FilterPanel filters={filters} onFilterChange={handleFilterChange} />
           </aside>
 
           {/* Perfume Grid */}
-          <main className="flex-grow">
+          <main className="grow">
             {loading ? (
               <div className="flex flex-col justify-center items-center py-20">
                 <div className="w-12 h-12 border-2 border-accent-500 border-t-transparent rounded-full animate-spin"></div>
                 <p className="mt-4 text-dark-500">Loading fragrances...</p>
+              </div>
+            ) : error ? (
+              <div className="text-center py-20 bg-white rounded-2xl shadow-sm border border-red-100">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-red-50 flex items-center justify-center">
+                  <span className="text-4xl">⚠️</span>
+                </div>
+                <h3 className="text-xl font-display font-semibold text-dark-800 mb-2">
+                  Collection unavailable
+                </h3>
+                <p className="text-dark-500 max-w-md mx-auto">
+                  {error}
+                </p>
               </div>
             ) : perfumes.length > 0 ? (
               <>
