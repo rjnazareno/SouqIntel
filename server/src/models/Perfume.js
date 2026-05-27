@@ -69,7 +69,35 @@ const perfumeSchema = new mongoose.Schema({
   description: {
     type: String,
     default: ''
-  }
+  },
+  reviews: [{
+    source: {
+      type: String,
+      enum: ['fragrantica', 'reddit', 'basenotes', 'youtube', 'community'],
+      required: true
+    },
+    author: {
+      type: String,
+      default: 'Anonymous'
+    },
+    rating: {
+      type: Number,
+      min: 1,
+      max: 5
+    },
+    text: {
+      type: String,
+      required: true
+    },
+    url: {
+      type: String,
+      default: ''
+    },
+    date: {
+      type: String,
+      default: ''
+    }
+  }]
 }, {
   timestamps: true
 })

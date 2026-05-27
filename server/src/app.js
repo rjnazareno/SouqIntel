@@ -9,6 +9,7 @@ import brandRoutes from './routes/brands.js'
 import noteRoutes from './routes/notes.js'
 import dupeRoutes from './routes/dupes.js'
 import authRoutes from './routes/auth.js'
+import chatbotRoutes from './routes/chatbot.js'
 
 // Load environment variables
 dotenv.config()
@@ -29,6 +30,7 @@ app.use('/api/brands', brandRoutes)
 app.use('/api/notes', noteRoutes)
 app.use('/api/dupes', dupeRoutes)
 app.use('/api/auth', authRoutes)
+app.use('/api/chat', chatbotRoutes)
 
 // Health check
 app.get('/api/health', (req, res) => {

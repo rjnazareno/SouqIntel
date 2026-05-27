@@ -185,7 +185,13 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 9,
-        description: 'A luminous, sophisticated amber fragrance with saffron and cedar'
+        description: 'A luminous, sophisticated amber fragrance with saffron and cedar',
+        imageUrl: '/images/perfumes/baccarat-rouge-540.jpg',
+        reviews: [
+          { source: 'fragrantica', author: 'ScentExplorer', rating: 5, text: 'This is liquid gold. The saffron opening is intoxicating, and it dries down to this ethereal amber cloud that lasts forever. Worth every penny.', date: '2024' },
+          { source: 'reddit', author: 'u/fragranceenthusiast', rating: 5, text: 'BR540 lives up to the hype. Compliment magnet, beast mode projection. People will ask what you\'re wearing.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'OudLover', rating: 4, text: 'Unique DNA that\'s instantly recognizable. The ambergris and saffron combo is masterful. Only downside is how common it\'s becoming.', date: '2023' }
+        ]
       },
       {
         name: 'Aventus',
@@ -202,7 +208,13 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 8,
-        description: 'Bold, masculine scent celebrating strength and success'
+        description: 'Bold, masculine scent celebrating strength and success',
+        imageUrl: '/images/perfumes/aventus.jpg',
+        reviews: [
+          { source: 'fragrantica', author: 'CreedCollector', rating: 5, text: 'The king of fragrances. That pineapple-birch combo is legendary. Every man should own a bottle.', date: '2024' },
+          { source: 'reddit', author: 'u/aventus_addict', rating: 5, text: 'Batch variations aside, this is still the GOAT for office and date nights. Smoky, fruity perfection.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Jeremy Fragrance', rating: 5, text: 'POWER! Aventus is the fragrance that started the whole clone industry. Original is always the best.', date: '2023' }
+        ]
       },
       {
         name: 'Oud Wood',
@@ -219,7 +231,13 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Rare, exotic oud blended with sandalwood and vetiver'
+        description: 'Rare, exotic oud blended with sandalwood and vetiver',
+        imageUrl: '/images/perfumes/oud-wood.jpg',
+        reviews: [
+          { source: 'fragrantica', author: 'WoodyNotes', rating: 5, text: 'The oud that made oud mainstream in the West. Smooth, sophisticated, office-appropriate. A modern classic.', date: '2024' },
+          { source: 'reddit', author: 'u/tomford_fan', rating: 4, text: 'Great gateway into oud fragrances. Not overwhelming, very refined. Longevity could be better for the price.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'OudExpert', rating: 4, text: 'Western interpretation of oud done right. The rosewood and cardamom balance is perfect. Versatile year-round.', date: '2023' }
+        ]
       },
       {
         name: 'Sauvage',
@@ -236,7 +254,13 @@ const seedDatabase = async () => {
         concentration: 'EDT',
         longevity: 8,
         sillage: 8,
-        description: 'Fresh, raw masculinity inspired by wide-open spaces'
+        description: 'Fresh, raw masculinity inspired by wide-open spaces',
+        imageUrl: '/images/perfumes/sauvage.jpg',
+        reviews: [
+          { source: 'fragrantica', author: 'FreshScenter', rating: 5, text: 'The most complimented fragrance I own. Ambroxan magic at its finest. Works everywhere, anytime.', date: '2024' },
+          { source: 'reddit', author: 'u/dior_daily', rating: 4, text: 'Ubiquitous for a reason. Clean, fresh, masculine. Might smell it on others but who cares, it works.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Gent Scents', rating: 5, text: 'If you need one fragrance for your collection, Sauvage covers 90% of situations. Mass-appealing done right.', date: '2023' }
+        ]
       },
       {
         name: 'La Nuit de L\'Homme',
@@ -253,7 +277,12 @@ const seedDatabase = async () => {
         concentration: 'EDT',
         longevity: 6,
         sillage: 6,
-        description: 'Seductive nighttime fragrance with cardamom and cedar'
+        description: 'Seductive nighttime fragrance with cardamom and cedar',
+        reviews: [
+          { source: 'fragrantica', author: 'NightOwl', rating: 5, text: 'The ultimate seduction scent. That cardamom opening is intoxicating. Perfect for romantic evenings.', date: '2024' },
+          { source: 'reddit', author: 'u/ysl_fan', rating: 4, text: 'Beautiful scent but longevity has been reformulated. Still my go-to date night fragrance though.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'ScentCritic', rating: 4, text: 'Spicy, sweet, mysterious. One of the best designer releases. Just wish it lasted longer.', date: '2023' }
+        ]
       },
       {
         name: 'Interlude Man',
@@ -270,7 +299,13 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 10,
         sillage: 10,
-        description: 'Powerful, smoky oud masterpiece'
+        description: 'Powerful, smoky oud masterpiece',
+        imageUrl: '/images/perfumes/interlude-man.jpg',
+        reviews: [
+          { source: 'fragrantica', author: 'OudMaster', rating: 5, text: 'This is what oud should smell like. Smoky, incense-heavy, absolutely stunning. Not for the faint of heart.', date: '2024' },
+          { source: 'reddit', author: 'u/amouage_collector', rating: 5, text: 'The most complex fragrance I own. Layers upon layers of smoke, oud, and amber. A true masterpiece.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'IncenseLover', rating: 5, text: 'Interlude Man is an experience. The oregano-frankincense opening is unlike anything else. Nuclear performance.', date: '2023' }
+        ]
       },
       {
         name: 'Side Effect',
@@ -287,7 +322,13 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 9,
-        description: 'Addictive tobacco-vanilla creation'
+        description: 'Addictive tobacco-vanilla creation',
+        imageUrl: '/images/perfumes/side-effect.jpg',
+        reviews: [
+          { source: 'fragrantica', author: 'VanillaAddict', rating: 5, text: 'Dangerously addictive. The rum-tobacco-vanilla combo is pure hedonism in a bottle. Compliment beast.', date: '2024' },
+          { source: 'reddit', author: 'u/initio_fan', rating: 5, text: 'Side Effect lives up to its name. People get addicted to this scent. My wife won\'t let me wear anything else.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Curly Scents', rating: 5, text: 'If you want a gourmand that doesn\'t smell like dessert, Side Effect is it. Sophisticated boozy warmth.', date: '2023' }
+        ]
       },
       {
         name: 'Layton',
@@ -304,7 +345,13 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Noble, sophisticated apple and lavender fragrance'
+        description: 'Noble, sophisticated apple and lavender fragrance',
+        imageUrl: '/images/perfumes/layton.jpg',
+        reviews: [
+          { source: 'fragrantica', author: 'PDMCollector', rating: 5, text: 'Layton is versatile perfection. Works in any setting, any season. The apple-vanilla dry down is heavenly.', date: '2024' },
+          { source: 'reddit', author: 'u/pdm_addict', rating: 5, text: 'Best blind buy I ever made. Professional enough for work, sexy enough for dates. Mass-appealing niche.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'LaytonLover', rating: 5, text: 'A crowd-pleaser that doesn\'t sacrifice quality. The menthol note gives it freshness others lack.', date: '2023' }
+        ]
       },
       {
         name: 'Tobacco Vanille',
@@ -321,7 +368,13 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Opulent blend of tobacco and vanilla'
+        description: 'Opulent blend of tobacco and vanilla',
+        imageUrl: '/images/perfumes/tobacco-vanille.jpeg',
+        reviews: [
+          { source: 'fragrantica', author: 'TobaccoHead', rating: 5, text: 'The perfect winter fragrance. Rich, warm, inviting. Smells like a cozy evening by the fireplace.', date: '2024' },
+          { source: 'reddit', author: 'u/tf_collector', rating: 5, text: 'TV is the fragrance that got me into niche. Honey and tobacco leaf done to perfection. Timeless.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'The Fragrance Apprentice', rating: 5, text: 'Nothing beats Tobacco Vanille in cold weather. It\'s a warm hug in a bottle. Expensive but worth it.', date: '2023' }
+        ]
       },
       {
         name: 'Noir de Noir',
@@ -338,7 +391,13 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Dark, sexy rose and oud composition'
+        description: 'Dark, sexy rose and oud composition',
+        imageUrl: '/images/perfumes/noir-de-noir.jpg',
+        reviews: [
+          { source: 'fragrantica', author: 'RoseEnthusiast', rating: 5, text: 'The darkest rose you\'ll ever smell. Earthy, chocolatey, sensual. Not your grandmother\'s rose perfume.', date: '2024' },
+          { source: 'reddit', author: 'u/darkscents', rating: 5, text: 'NdN is underrated in the TF lineup. The saffron-rose-oud combo creates something truly special.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'NicheReviewer', rating: 4, text: 'Sophisticated and unisex despite being marketed to women initially. Works beautifully on everyone.', date: '2023' }
+        ]
       },
       {
         name: 'Black Orchid',
@@ -355,7 +414,13 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Luxurious, sensual dark floral'
+        description: 'Luxurious, sensual dark floral',
+        imageUrl: '/images/perfumes/black-orchid.jpg',
+        reviews: [
+          { source: 'fragrantica', author: 'OrchidLover', rating: 5, text: 'Black Orchid is a statement piece. Dark chocolate, black truffle, exotic florals. Unforgettable.', date: '2024' },
+          { source: 'reddit', author: 'u/tomford_girl', rating: 5, text: 'This was my gateway into luxury fragrance. Still in my top 5 after all these years. Iconic.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'LuxuryScents', rating: 4, text: 'Divisive but brilliant. You either love it or hate it. I happen to think it\'s genius.', date: '2023' }
+        ]
       },
       {
         name: 'Eros',
@@ -372,7 +437,12 @@ const seedDatabase = async () => {
         concentration: 'EDT',
         longevity: 7,
         sillage: 8,
-        description: 'Fresh, invigorating scent of passion'
+        description: 'Fresh, invigorating scent of passion',
+        reviews: [
+          { source: 'fragrantica', author: 'ClubKing', rating: 5, text: 'Eros is the king of clubbing fragrances. Sweet, fresh, projects like crazy. Always gets compliments.', date: '2024' },
+          { source: 'reddit', author: 'u/versace_boi', rating: 4, text: 'Great value for a designer. The mint-vanilla combo is addictive. Just be careful not to overspray.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Fragrance One', rating: 5, text: 'Eros changed the game for designer fragrances. Sweet masculinity done right. Still a top seller.', date: '2023' }
+        ]
       },
       {
         name: 'Bleu de Chanel',
@@ -389,7 +459,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Refined, woody aromatic fragrance'
+        description: 'Refined, woody aromatic fragrance',
+        reviews: [
+          { source: 'fragrantica', author: 'BleuLover', rating: 5, text: 'The definition of clean masculinity. Perfect for any occasion. My signature scent for years.', date: '2024' },
+          { source: 'reddit', author: 'u/chanel_daily', rating: 5, text: 'BdC is what luxury smells like. Worth every penny. The EDP is the best flanker IMO.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'ClassicGent', rating: 5, text: 'Timeless elegance. Incense, woods, citrus - all perfectly balanced. A true gentleman\'s fragrance.', date: '2023' }
+        ]
       },
       {
         name: 'The One',
@@ -406,7 +481,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 7,
         sillage: 6,
-        description: 'Elegant, spicy tobacco fragrance'
+        description: 'Elegant, spicy tobacco fragrance',
+        reviews: [
+          { source: 'fragrantica', author: 'DGFan', rating: 5, text: 'Sophisticated and seductive. The tobacco-amber base is incredible. Perfect date night scent.', date: '2024' },
+          { source: 'reddit', author: 'u/theone_daily', rating: 4, text: 'Underrated gem. The ginger opening is unique, and the dry down is gorgeous. Just wish it lasted longer.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Fragrance Bros', rating: 5, text: 'The One EDP is a significant upgrade over EDT. Tobacco-heavy, romantic, super classy.', date: '2023' }
+        ]
       },
       {
         name: 'Acqua di Gio Profumo',
@@ -423,7 +503,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Modern aquatic fragrance with amber depth'
+        description: 'Modern aquatic fragrance with amber depth',
+        reviews: [
+          { source: 'fragrantica', author: 'AquaticFan', rating: 5, text: 'This took the original AdG and made it sophisticated. The amber adds depth without losing freshness.', date: '2024' },
+          { source: 'reddit', author: 'u/armani_scents', rating: 5, text: 'Profumo is the mature version of AdG. Works year-round, office appropriate, compliment getter.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'FreshExpert', rating: 4, text: 'A modern classic. The patchouli gives it that distinctive earthy quality. Very versatile.', date: '2023' }
+        ]
       },
 
       // Arabian Dupes
@@ -442,7 +527,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 8,
-        description: 'Luxurious amber-saffron composition, excellent BR540 alternative'
+        description: 'Luxurious amber-saffron composition, excellent BR540 alternative',
+        reviews: [
+          { source: 'fragrantica', author: 'BudgetKing', rating: 5, text: 'Don\'t sleep on Raghba. For the price, this is incredible. Performs like a $300 fragrance.', date: '2024' },
+          { source: 'reddit', author: 'u/lattafa_fan', rating: 5, text: 'Raghba got me into Middle Eastern perfumery. Sweet, warm, long-lasting. BR540 vibes at 10% of the cost.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Demi Rawling', rating: 5, text: 'Best value in the fragrance world. Smells expensive, projects well, lasts all day. What more do you want?', date: '2023' }
+        ]
       },
       {
         name: 'Club de Nuit Intense Man',
@@ -459,7 +549,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 9,
-        description: 'Powerful Aventus alternative with exceptional performance'
+        description: 'Powerful Aventus alternative with exceptional performance',
+        reviews: [
+          { source: 'fragrantica', author: 'CloneKing', rating: 5, text: 'CDNIM is the clone that started a revolution. Recent batches smell even closer to Aventus. Unbeatable value.', date: '2024' },
+          { source: 'reddit', author: 'u/cdnim_daily', rating: 5, text: 'Forget spending $400 on Aventus. CDNIM does 90% of the work for $30. Nuclear performance too.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Chaos Fragrances', rating: 5, text: 'The OG clone. It\'s been reformulated and improved. Must-have for any collection.', date: '2023' }
+        ]
       },
       {
         name: 'Khamrah',
@@ -476,7 +571,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 9,
-        description: 'Rich, boozy praline with cinnamon spice'
+        description: 'Rich, boozy praline with cinnamon spice',
+        reviews: [
+          { source: 'fragrantica', author: 'GourmandLover', rating: 5, text: 'Khamrah took TikTok by storm for a reason. Boozy cinnamon praline that lasts forever. Absolute gem.', date: '2024' },
+          { source: 'reddit', author: 'u/khamrah_fan', rating: 5, text: 'My wife bought 3 backups. The drydown is like Angels Share but sweeter. Winter must-have.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Sandra Pereira', rating: 5, text: 'If you love sweet fragrances, Khamrah is mandatory. The hype is real. 10+ hours easy.', date: '2023' }
+        ]
       },
       {
         name: 'Asad',
@@ -493,7 +593,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Beast mode tobacco-coffee-vanilla powerhouse'
+        description: 'Beast mode tobacco-coffee-vanilla powerhouse',
+        reviews: [
+          { source: 'fragrantica', author: 'BeastMode', rating: 5, text: 'Asad is ridiculously good. Coffee, tobacco, vanilla in perfect harmony. Projects like a monster.', date: '2024' },
+          { source: 'reddit', author: 'u/asad_addict', rating: 5, text: 'This punches WAY above its price. Smells similar to Stronger With You Intensely. Compliment magnet.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'CoffeeScents', rating: 5, text: 'If you like coffee notes, Asad delivers. The tobacco gives it sophistication. Winter beast.', date: '2023' }
+        ]
       },
       {
         name: 'Oud for Glory',
@@ -510,7 +615,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 8,
-        description: 'Excellent Oud Wood alternative with great performance'
+        description: 'Excellent Oud Wood alternative with great performance',
+        reviews: [
+          { source: 'fragrantica', author: 'OudSeeker', rating: 5, text: 'Oud for Glory outperforms Oud Wood in every way. Smoother, longer-lasting, and fraction of the price.', date: '2024' },
+          { source: 'reddit', author: 'u/lattafa_daily', rating: 5, text: 'Sold my Oud Wood bottle after getting this. Virtually identical but better longevity. No regrets.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Big Beard Business', rating: 5, text: 'Best Oud Wood clone period. The cardamom opening is even better than the original.', date: '2023' }
+        ]
       },
       {
         name: 'Amber Oud Gold Edition',
@@ -527,7 +637,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 9,
-        description: 'Luxurious amber-oud with golden warmth'
+        description: 'Luxurious amber-oud with golden warmth',
+        reviews: [
+          { source: 'fragrantica', author: 'AmberEnthusiast', rating: 5, text: 'This is liquid gold in a bottle. The saffron-amber combo is gorgeous. Smells way more expensive than it is.', date: '2024' },
+          { source: 'reddit', author: 'u/alharamain_fan', rating: 5, text: 'Amber Oud Gold is an experience. It evolves beautifully over hours. My non-fraghead friends love it.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'OudConnoisseur', rating: 4, text: 'Great Middle Eastern amber-oud hybrid. Not a clone of anything specific, just a beautiful original.', date: '2023' }
+        ]
       },
       {
         name: 'L\'Aventure',
@@ -544,7 +659,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Fresh, fruity Aventus-inspired creation'
+        description: 'Fresh, fruity Aventus-inspired creation',
+        reviews: [
+          { source: 'fragrantica', author: 'FreshFanatic', rating: 4, text: 'L\'Aventure leans more fruity than CDNIM. Different take on Aventus DNA. More citrus-forward.', date: '2024' },
+          { source: 'reddit', author: 'u/aventure_daily', rating: 4, text: 'If you want a cleaner, less smoky Aventus clone, this is it. Great for hot weather.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'CloneReviewer', rating: 4, text: 'Solid Aventus alternative. Not as complex as CDNIM but more wearable in professional settings.', date: '2023' }
+        ]
       },
       {
         name: 'Shahrazade',
@@ -561,7 +681,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Mysterious, enchanting oriental'
+        description: 'Mysterious, enchanting oriental',
+        reviews: [
+          { source: 'fragrantica', author: 'OrientalLover', rating: 4, text: 'Shahrazade tells a story. The saffron-rose-oud journey is captivating. Great for special occasions.', date: '2024' },
+          { source: 'reddit', author: 'u/swissarabian_fan', rating: 4, text: 'Underrated gem from Swiss Arabian. Complex and evolving. Definitely date-worthy.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'FlowerChild', rating: 4, text: 'Beautiful feminine oriental. The dry down is where this truly shines.', date: '2023' }
+        ]
       },
       {
         name: 'Vurv Royce White',
@@ -578,7 +703,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 7,
         sillage: 7,
-        description: 'Fresh, clean aquatic scent'
+        description: 'Fresh, clean aquatic scent',
+        reviews: [
+          { source: 'fragrantica', author: 'FreshAir', rating: 4, text: 'Clean, fresh, office-safe. Silver Mountain Water vibes at fraction of price. Great daily driver.', date: '2024' },
+          { source: 'reddit', author: 'u/fresh_daily', rating: 4, text: 'This is my hot weather go-to. Light, clean, pleasant. Not groundbreaking but reliable.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'BudgetCollector', rating: 4, text: 'Solid fresh scent for the price. Projects well for what it is. Nice bottle too.', date: '2023' }
+        ]
       },
       {
         name: 'Fakhar',
@@ -595,7 +725,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Elegant cardamom-lavender composition'
+        description: 'Elegant cardamom-lavender composition',
+        reviews: [
+          { source: 'fragrantica', author: 'SpiceLover', rating: 5, text: 'Fakhar = LNDL on steroids. More cardamom, more projection, more longevity. Clone that beats original.', date: '2024' },
+          { source: 'reddit', author: 'u/fakhar_fan', rating: 5, text: 'If you love La Nuit de L\'Homme, Fakhar is a must-try. Better performance, similar DNA.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Redolessence', rating: 4, text: 'Great LNDL alternative. The cardamom is more prominent, which I prefer. Amazing value.', date: '2023' }
+        ]
       },
       {
         name: 'Opulent Oud',
@@ -612,7 +747,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Rich, opulent oud fragrance'
+        description: 'Rich, opulent oud fragrance',
+        reviews: [
+          { source: 'fragrantica', author: 'OudObsessed', rating: 4, text: 'Beautiful traditional oud fragrance. Not a clone - its own thing. Rich, warm, long-lasting.', date: '2024' },
+          { source: 'reddit', author: 'u/rasasi_collector', rating: 4, text: 'Rasasi quality never disappoints. This is oud done right - accessible but not dumbed down.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'OudScholar', rating: 4, text: 'A well-made oud-rose composition. Traditional Middle Eastern perfumery at its finest.', date: '2023' }
+        ]
       },
       {
         name: 'Qasamat Morhaf',
@@ -629,7 +769,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Elegant floral-oriental composition'
+        description: 'Elegant floral-oriental composition',
+        reviews: [
+          { source: 'fragrantica', author: 'FloralFan', rating: 4, text: 'Qasamat Morhaf is elegant and refined. The rose-jasmine heart is beautiful. Great gift option.', date: '2024' },
+          { source: 'reddit', author: 'u/rasasi_daily', rating: 4, text: 'Underrated from Rasasi. Very classy, not too sweet. Works well year-round.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'RoseEnthusiast', rating: 4, text: 'If you appreciate florals done well, give this a try. Sophisticated and long-lasting.', date: '2023' }
+        ]
       },
       {
         name: 'Dumont Nitro Red',
@@ -646,7 +791,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 9,
-        description: 'Layton-inspired spicy vanilla powerhouse'
+        description: 'Layton-inspired spicy vanilla powerhouse',
+        reviews: [
+          { source: 'fragrantica', author: 'LaytonClone', rating: 5, text: 'Nitro Red is scary close to Layton. The apple-vanilla DNA is spot on. Insane value.', date: '2024' },
+          { source: 'reddit', author: 'u/nitro_fan', rating: 5, text: 'If you want Layton vibes without the $300 price, Nitro Red is the answer. Beast mode too.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Gent Scents', rating: 5, text: 'Paris Corner knocked it out the park with this one. Layton lovers will be impressed.', date: '2023' }
+        ]
       },
       {
         name: 'Afnan Supremacy Silver',
@@ -663,7 +813,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Fresh, invigorating Silver Mountain Water alternative'
+        description: 'Fresh, invigorating Silver Mountain Water alternative',
+        reviews: [
+          { source: 'fragrantica', author: 'SilverFan', rating: 4, text: 'Supremacy Silver captures the SMW vibe well. Fresh, clean, longer-lasting than expected.', date: '2024' },
+          { source: 'reddit', author: 'u/afnan_daily', rating: 4, text: 'Great Creed alternative at budget price. Not identical but same fresh tea vibe.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'FreshCollector', rating: 4, text: 'Afnan quality at budget pricing. This is great for casual summer wear.', date: '2023' }
+        ]
       },
       {
         name: 'Oud Mood',
@@ -680,7 +835,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Oud Rose alternative with great value'
+        description: 'Oud Rose alternative with great value',
+        reviews: [
+          { source: 'fragrantica', author: 'MoodSetter', rating: 4, text: 'Oud Mood hits that rose-oud combo perfectly. Reminds me of Oud Ispahan. Great gateway oud.', date: '2024' },
+          { source: 'reddit', author: 'u/oud_mood_daily', rating: 4, text: 'Lattafa consistency is impressive. Oud Mood is smooth, wearable, and smells expensive.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'RoseOudLover', rating: 4, text: 'Entry-level oud that doesn\'t smell cheap. The rose keeps it balanced and wearable.', date: '2023' }
+        ]
       },
       {
         name: 'Velvet Oud',
@@ -697,7 +857,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Smooth, velvety oud composition'
+        description: 'Smooth, velvety oud composition',
+        reviews: [
+          { source: 'fragrantica', author: 'VelvetTouch', rating: 5, text: 'Ajmal Velvet Oud is aptly named. Smooth, luxurious, not harsh at all. Perfect intro to real oud.', date: '2024' },
+          { source: 'reddit', author: 'u/ajmal_fan', rating: 5, text: 'This was my first Ajmal purchase. Now I own 6. The quality to price ratio is unmatched.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'OudPurist', rating: 4, text: 'Ajmal knows oud. This is Western-friendly but still authentic. Beautiful composition.', date: '2023' }
+        ]
       },
       {
         name: 'Wisal',
@@ -714,7 +879,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Beautiful white floral bouquet'
+        description: 'Beautiful white floral bouquet',
+        reviews: [
+          { source: 'fragrantica', author: 'WhiteFloral', rating: 4, text: 'Wisal is feminine elegance in a bottle. The tuberose-jasmine combo is intoxicating but not overpowering.', date: '2024' },
+          { source: 'reddit', author: 'u/ajmal_girl', rating: 4, text: 'Finally a Middle Eastern brand that does white florals well. Fresh, clean, romantic.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'FloralQueen', rating: 4, text: 'Beautiful for spring/summer. The dry down is creamy and comfortable. Great longevity.', date: '2023' }
+        ]
       },
       {
         name: 'Encre Noire',
@@ -731,7 +901,12 @@ const seedDatabase = async () => {
         concentration: 'EDT',
         longevity: 8,
         sillage: 6,
-        description: 'Dark, mysterious vetiver composition'
+        description: 'Dark, mysterious vetiver composition',
+        reviews: [
+          { source: 'fragrantica', author: 'VetiverLord', rating: 5, text: 'Encre Noire is the best vetiver fragrance at any price. Dark, inky, mysterious. An absolute classic.', date: '2024' },
+          { source: 'reddit', author: 'u/encre_noire_daily', rating: 5, text: 'The best $25 you can spend in fragrance. Cold, wet forest in a bottle. Artistic masterpiece.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'DarkScents', rating: 5, text: 'If you appreciate unconventional fragrances, Encre Noire is essential. Wet earth and cypress perfection.', date: '2023' }
+        ]
       },
       {
         name: 'Perfume de Marly Oajan',
@@ -748,7 +923,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Warm, spicy honey oriental'
+        description: 'Warm, spicy honey oriental',
+        reviews: [
+          { source: 'fragrantica', author: 'HoneyLover', rating: 5, text: 'Oajan is pure indulgence. Honey, cinnamon, vanilla - like being wrapped in a warm cashmere blanket.', date: '2024' },
+          { source: 'reddit', author: 'u/pdm_collector', rating: 5, text: 'This is the PDM that got me hooked. The honey note is done perfectly. Winter signature material.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Fragrance Bro', rating: 5, text: 'Oajan is addictive. The dry down is pure bliss. If you like sweet fragrances, this is it.', date: '2023' }
+        ]
       },
       {
         name: 'Ombre Leather',
@@ -765,7 +945,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Bold, textured leather fragrance'
+        description: 'Bold, textured leather fragrance',
+        reviews: [
+          { source: 'fragrantica', author: 'LeatherLover', rating: 5, text: 'Ombre Leather is the definitive modern leather. Cardamom and violet give it sophistication. Masterpiece.', date: '2024' },
+          { source: 'reddit', author: 'u/tf_leather', rating: 5, text: 'Replaced Tuscan Leather in my collection. More wearable, just as impressive. The dry down is incredible.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'LeatherExpert', rating: 4, text: 'Tom Ford does leather better than anyone. This is their most balanced leather offering.', date: '2023' }
+        ]
       },
       {
         name: 'Bad Boy',
@@ -782,7 +967,12 @@ const seedDatabase = async () => {
         concentration: 'EDT',
         longevity: 7,
         sillage: 7,
-        description: 'Edgy, rebellious aromatic fragrance'
+        description: 'Edgy, rebellious aromatic fragrance',
+        reviews: [
+          { source: 'fragrantica', author: 'BadBoyFan', rating: 4, text: 'Great everyday scent. The tonka-cocoa base is addictive. Not as edgy as marketed but very pleasant.', date: '2024' },
+          { source: 'reddit', author: 'u/herrera_daily', rating: 4, text: 'Solid designer. Nothing groundbreaking but reliable. Gets compliments at the office.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Chaos Fragrances', rating: 4, text: 'Bad Boy is a safe blind buy. Crowd-pleasing DNA with decent performance. Good bottle design too.', date: '2023' }
+        ]
       },
       {
         name: 'Supremacy In Oud',
@@ -799,7 +989,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Luxurious oud blend at affordable price'
+        description: 'Luxurious oud blend at affordable price',
+        reviews: [
+          { source: 'fragrantica', author: 'OudValue', rating: 5, text: 'Afnan does oud right. Supremacy In Oud is rich, complex, and smells like it costs 5x the price.', date: '2024' },
+          { source: 'reddit', author: 'u/afnan_oud', rating: 5, text: 'Budget oud that doesn\'t smell budget. The saffron-rose-oud trio is gorgeous. Crazy longevity.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'OudHunter', rating: 4, text: 'One of the best Middle Eastern oud compositions under $50. Projects well without being overwhelming.', date: '2023' }
+        ]
       },
       {
         name: 'Hayaati',
@@ -816,7 +1011,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 8,
-        description: 'Opulent amber fragrance with Middle Eastern flair'
+        description: 'Opulent amber fragrance with Middle Eastern flair',
+        reviews: [
+          { source: 'fragrantica', author: 'AmberDreams', rating: 4, text: 'Hayaati is a beautiful amber. Sweet but not cloying. The saffron adds that Middle Eastern touch.', date: '2024' },
+          { source: 'reddit', author: 'u/hayaati_fan', rating: 4, text: 'Great everyday Middle Eastern fragrance. Not too heavy, projects nicely. Compliment worthy.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'SaffronLover', rating: 4, text: 'If you like BR540 DNA but want something more unique, Hayaati is worth a try.', date: '2023' }
+        ]
       },
       {
         name: 'Sheikh Al Shuyukh',
@@ -833,7 +1033,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Royal oud composition fit for royalty'
+        description: 'Royal oud composition fit for royalty',
+        reviews: [
+          { source: 'fragrantica', author: 'RoyalScents', rating: 5, text: 'Sheikh Al Shuyukh is what royalty smells like. Regal, commanding, long-lasting. My holy grail cheapie.', date: '2024' },
+          { source: 'reddit', author: 'u/sheikh_daily', rating: 5, text: 'The name translates to Chief of Chiefs. It lives up to it. Oud done right for Western noses.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Demi Rawling', rating: 5, text: 'Best bang for buck oud on the market. Nuclear performance. You\'ll smell this a mile away.', date: '2023' }
+        ]
       },
       {
         name: 'Ameer Al Oudh Intense',
@@ -850,7 +1055,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 10,
         sillage: 9,
-        description: 'Intense, powerful oud experience'
+        description: 'Intense, powerful oud experience',
+        reviews: [
+          { source: 'fragrantica', author: 'IntenseOud', rating: 5, text: 'When they say intense, they mean it. This fills a room. Leather-oud combo is absolutely stunning.', date: '2024' },
+          { source: 'reddit', author: 'u/ameer_fan', rating: 5, text: 'Be careful with sprays. 2 max. This is nuclear. But the smell is gorgeous - deep, rich, royal.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'OudPowerhouse', rating: 5, text: 'Not for the faint of heart. If you want to make a statement, Ameer Al Oudh delivers.', date: '2023' }
+        ]
       },
       {
         name: 'Oud Elite',
@@ -867,7 +1077,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Elegant, refined oud composition'
+        description: 'Elegant, refined oud composition',
+        reviews: [
+          { source: 'fragrantica', author: 'EliteScenter', rating: 4, text: 'Oud Elite is more subtle than other Armaf ouds. Elegant and refined. Good for oud beginners.', date: '2024' },
+          { source: 'reddit', author: 'u/armaf_oud', rating: 4, text: 'This is my office oud. Not too strong, not too weak. Professional and sophisticated.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'SubtleOud', rating: 4, text: 'For those who want oud without overwhelming the room. Well-balanced and elegant.', date: '2023' }
+        ]
       },
       {
         name: 'Milestone',
@@ -884,7 +1099,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Fresh, invigorating Green Irish Tweed alternative'
+        description: 'Fresh, invigorating Green Irish Tweed alternative',
+        reviews: [
+          { source: 'fragrantica', author: 'GITClone', rating: 5, text: 'Milestone is the best GIT clone period. 90% there at 10% of the price. Fresh, green, versatile.', date: '2024' },
+          { source: 'reddit', author: 'u/milestone_daily', rating: 5, text: 'Sold my GIT bottle. Milestone does everything it does but lasts longer. No regrets.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Curly Scents', rating: 5, text: 'Armaf nailed the GIT DNA. Fresh, green, masculine. One of my favorite clones.', date: '2023' }
+        ]
       },
       {
         name: 'Tres Nuit',
@@ -901,7 +1121,12 @@ const seedDatabase = async () => {
         concentration: 'EDT',
         longevity: 7,
         sillage: 6,
-        description: 'Classic fresh aromatic, GIT alternative'
+        description: 'Classic fresh aromatic, GIT alternative',
+        reviews: [
+          { source: 'fragrantica', author: 'FreshFan', rating: 4, text: 'Tres Nuit is more floral than Milestone. Different take on GIT. Both are good, just different.', date: '2024' },
+          { source: 'reddit', author: 'u/tresnuit_fan', rating: 4, text: 'Clean, fresh, inoffensive. Great for work or casual outings. Very approachable.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'ClassicScents', rating: 4, text: 'If you want a subtle fresh fragrance, Tres Nuit delivers. Not as loud as other Armaf offerings.', date: '2023' }
+        ]
       },
       {
         name: 'Yara',
@@ -918,7 +1143,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Sweet, feminine floral gourmand'
+        description: 'Sweet, feminine floral gourmand',
+        reviews: [
+          { source: 'fragrantica', author: 'YaraFan', rating: 5, text: 'Yara took TikTok by storm and deserves the hype. Sweet, creamy, long-lasting. Compliment magnet.', date: '2024' },
+          { source: 'reddit', author: 'u/yara_daily', rating: 5, text: 'My signature scent now. Everyone asks what I\'m wearing. The marshmallow note is addictive.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Sandra Pereira', rating: 5, text: 'If you love sweet fragrances, Yara is non-negotiable. BR540 vibes with its own twist.', date: '2023' }
+        ]
       },
       {
         name: 'Yara Tous',
@@ -935,7 +1165,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Romantic pink floral gourmand'
+        description: 'Romantic pink floral gourmand',
+        reviews: [
+          { source: 'fragrantica', author: 'PinkDreams', rating: 5, text: 'Yara Tous is like a pink dream. The rose-praline combo is heavenly. Perfect for spring.', date: '2024' },
+          { source: 'reddit', author: 'u/yara_tous', rating: 5, text: 'More floral than original Yara. The peony note adds freshness. Different but equally good.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'RomanticScents', rating: 4, text: 'Beautiful romantic fragrance. Sweet but not juvenile. Sophisticated sweetness.', date: '2023' }
+        ]
       },
       {
         name: 'Badee Al Oud Honor',
@@ -952,7 +1187,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 8,
-        description: 'Honorable oud composition with citrus opening'
+        description: 'Honorable oud composition with citrus opening',
+        reviews: [
+          { source: 'fragrantica', author: 'BadeeHonor', rating: 4, text: 'Badee Al Oud Honor is a pleasant surprise. The citrus-oud combo is unique. Very wearable.', date: '2024' },
+          { source: 'reddit', author: 'u/badee_fan', rating: 4, text: 'Fresh opening that settles into rich oud. Different from typical heavy oud fragrances.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'LightOud', rating: 4, text: 'For those who find oud too heavy, this is the answer. Light, fresh, but still sophisticated.', date: '2023' }
+        ]
       },
       {
         name: 'Oud Ispahan',
@@ -969,7 +1209,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Exotic rose-oud journey to the Middle East'
+        description: 'Exotic rose-oud journey to the Middle East',
+        reviews: [
+          { source: 'fragrantica', author: 'DiorOud', rating: 5, text: 'Oud Ispahan is Dior\'s oud masterpiece. The Turkish rose and oud combo is intoxicating. Pure luxury.', date: '2024' },
+          { source: 'reddit', author: 'u/dior_collector', rating: 5, text: 'This is what $350 smells like. Rich, complex, unforgettable. Worth every penny.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'OudRose', rating: 5, text: 'Oud Ispahan set the standard for Western rose-oud fragrances. A modern classic.', date: '2023' }
+        ]
       },
       // ========== NEW ADDITIONS ==========
       // More Designer/Niche Originals
@@ -988,7 +1233,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Fresh, green classic masculine fragrance'
+        description: 'Fresh, green classic masculine fragrance',
+        reviews: [
+          { source: 'fragrantica', author: 'GreenLegend', rating: 5, text: 'GIT is the original green fragrance. Violet leaf and iris are beautiful together. True gentleman scent.', date: '2024' },
+          { source: 'reddit', author: 'u/creed_collector', rating: 5, text: 'The fougere that launched a thousand clones. Nothing quite matches the original\'s depth.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'ClassicGreen', rating: 5, text: 'Timeless elegance. GIT works everywhere - office, dates, weddings. A true masterpiece.', date: '2023' }
+        ]
       },
       {
         name: 'Silver Mountain Water',
@@ -1005,7 +1255,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 7,
         sillage: 6,
-        description: 'Crisp, clean mountain air fragrance'
+        description: 'Crisp, clean mountain air fragrance',
+        reviews: [
+          { source: 'fragrantica', author: 'MountainAir', rating: 4, text: 'SMW is like breathing crisp mountain air. Clean, fresh, sophisticated. Great for summer.', date: '2024' },
+          { source: 'reddit', author: 'u/smw_fan', rating: 4, text: 'Beautiful tea-like freshness. Only downside is longevity - you\'ll need to reapply.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'FreshCreed', rating: 4, text: 'Unique in the Creed lineup. Light, effervescent, perfect for hot days.', date: '2023' }
+        ]
       },
       {
         name: 'Oud Rose',
@@ -1022,7 +1277,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Luxurious rose and oud combination'
+        description: 'Luxurious rose and oud combination',
+        reviews: [
+          { source: 'fragrantica', author: 'TFRose', rating: 4, text: 'Tom Ford\'s take on rose-oud. Less intense than Oud Wood but equally sophisticated.', date: '2024' },
+          { source: 'reddit', author: 'u/tf_rose', rating: 4, text: 'Beautiful rose-forward oud. The saffron adds warmth. Very romantic.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'RoseOud', rating: 4, text: 'A softer option in the Private Blend line. The rose dominates but oud provides structure.', date: '2023' }
+        ]
       },
       {
         name: 'Lost Cherry',
@@ -1039,7 +1299,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 8,
-        description: 'Decadent cherry-almond gourmand'
+        description: 'Decadent cherry-almond gourmand',
+        reviews: [
+          { source: 'fragrantica', author: 'CherryLover', rating: 5, text: 'Lost Cherry is pure decadence. Black cherry liqueur with almond and vanilla. Addictive.', date: '2024' },
+          { source: 'reddit', author: 'u/lost_cherry', rating: 5, text: 'Smells like Dr. Pepper in the best way. Sweet, boozy, unique. Compliment beast.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Jeremy Fragrance', rating: 5, text: 'Lost Cherry broke the internet. The cherry-almond combo is iconic. Sweet tooth paradise.', date: '2023' }
+        ]
       },
       {
         name: 'Tuscan Leather',
@@ -1056,7 +1321,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Bold, smoky Italian leather'
+        description: 'Bold, smoky Italian leather',
+        reviews: [
+          { source: 'fragrantica', author: 'LeatherKing', rating: 5, text: 'Tuscan Leather is a full-bodied leather experience. Raspberry-leather opening is iconic. Not for the timid.', date: '2024' },
+          { source: 'reddit', author: 'u/tf_leather_fan', rating: 5, text: 'TL punches you in the face with leather and you\'ll thank it. Raw, powerful, unforgettable.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'LeatherPurist', rating: 5, text: 'The leather fragrance all others are measured against. Saffron and raspberry top notes are genius.', date: '2023' }
+        ]
       },
       {
         name: 'Herod',
@@ -1073,7 +1343,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Warm, spicy tobacco masterpiece'
+        description: 'Warm, spicy tobacco masterpiece',
+        reviews: [
+          { source: 'fragrantica', author: 'HeroFan', rating: 5, text: 'Herod is the tobacco king. Cinnamon, tobacco, vanilla in perfect harmony. Winter essential.', date: '2024' },
+          { source: 'reddit', author: 'u/pdm_herod', rating: 5, text: 'If you want to smell rich and successful, Herod does it. Compliment machine in cold weather.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Big Beard Business', rating: 5, text: 'Herod is PDM\'s best masculine offering. Pipe tobacco and vanilla. Pure sophistication.', date: '2023' }
+        ]
       },
       {
         name: 'Pegasus',
@@ -1090,7 +1365,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Sweet almond-vanilla with bitter notes'
+        description: 'Sweet almond-vanilla with bitter notes',
+        reviews: [
+          { source: 'fragrantica', author: 'PegasusFan', rating: 5, text: 'Pegasus is PDM done right. Almond, vanilla, bitter almond - absolutely divine. Works year-round.', date: '2024' },
+          { source: 'reddit', author: 'u/pdm_pegasus', rating: 5, text: 'My most complimented fragrance. The almond note is unique. Sophisticated yet approachable.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Gent Scents', rating: 5, text: 'Pegasus is a crowd-pleaser that doesn\'t sacrifice quality. Sweet but not cloying.', date: '2023' }
+        ]
       },
       {
         name: 'Carlisle',
@@ -1107,7 +1387,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 10,
         sillage: 9,
-        description: 'Rich, spicy oriental with rose and oud'
+        description: 'Rich, spicy oriental with rose and oud',
+        reviews: [
+          { source: 'fragrantica', author: 'CarlisleFan', rating: 5, text: 'Carlisle is PDM\'s hidden gem. Spicy, rosy, oudy - complex and rewarding. Nuclear performance.', date: '2024' },
+          { source: 'reddit', author: 'u/pdm_carlisle', rating: 5, text: 'This should be more popular. The vanilla-patchouli base is incredible. Beast mode.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'OrientalExpert', rating: 5, text: 'Carlisle is underrated in the PDM lineup. Rich, complex, long-lasting. Masterpiece.', date: '2023' }
+        ]
       },
       {
         name: 'Reflection Man',
@@ -1124,7 +1409,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 7,
-        description: 'Elegant, refined floral for men'
+        description: 'Elegant, refined floral for men',
+        reviews: [
+          { source: 'fragrantica', author: 'ReflectionFan', rating: 5, text: 'Reflection Man proves florals can be masculine. Jasmine and neroli done to perfection. Classy.', date: '2024' },
+          { source: 'reddit', author: 'u/amouage_reflection', rating: 5, text: 'The most elegant masculine I own. Perfect for formal occasions. Refined and sophisticated.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'FloralMasc', rating: 5, text: 'Amouage quality at its finest. This is what a gentleman smells like. Timeless.', date: '2023' }
+        ]
       },
       {
         name: 'Jubilation XXV',
@@ -1141,7 +1431,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 10,
         sillage: 9,
-        description: 'Majestic oriental with frankincense'
+        description: 'Majestic oriental with frankincense',
+        reviews: [
+          { source: 'fragrantica', author: 'JubilationKing', rating: 5, text: 'Jubilation XXV is a masterpiece. Frankincense and fruits create something magical. Royal scent.', date: '2024' },
+          { source: 'reddit', author: 'u/amouage_xxv', rating: 5, text: 'This is what luxury smells like. Complex, evolving, unforgettable. Worth every penny.', url: 'r/fragrance', date: '2024' },
+          { source: 'basenotes', author: 'NicheCollector', rating: 5, text: 'Amouage\'s crown jewel. The frankincense note is divine. A true celebration in a bottle.', date: '2023' }
+        ]
       },
       {
         name: 'Ombré Nomade',
@@ -1158,7 +1453,13 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 10,
         sillage: 9,
-        description: 'Intense, smoky oud masterpiece'
+        description: 'Intense, smoky oud masterpiece',
+        imageUrl: '/images/perfumes/ombr-nomade.jpg',
+        reviews: [
+          { source: 'fragrantica', author: 'LVFan', rating: 5, text: 'Ombré Nomade is LV\'s crown jewel. The raspberry-oud combo is genius. Nuclear beast mode.', date: '2024' },
+          { source: 'reddit', author: 'u/lv_fragrance', rating: 5, text: 'Worth the hype and price. Deep, rich, smoky oud that evolves beautifully. Statement piece.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Jeremy Fragrance', rating: 5, text: 'Ombré Nomade is the oud fragrance of the decade. Dense, powerful, unforgettable.', date: '2023' }
+        ]
       },
       {
         name: 'Rehab',
@@ -1175,7 +1476,12 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Addictive lavender-tobacco blend'
+        description: 'Addictive lavender-tobacco blend',
+        reviews: [
+          { source: 'fragrantica', author: 'RehabAddict', rating: 5, text: 'Rehab lives up to its name - you\'ll get addicted. Lavender and tobacco never smelled so good.', date: '2024' },
+          { source: 'reddit', author: 'u/initio_rehab', rating: 5, text: 'Better than Side Effect IMO. The lavender keeps it fresh while tobacco adds depth. Perfect balance.', url: 'r/fragrance', date: '2024' },
+          { source: 'community', author: 'LavanderLover', rating: 5, text: 'Sophisticated lavender with addictive qualities. Not your typical lavender fragrance.', date: '2023' }
+        ]
       },
       {
         name: 'Atomic Rose',
@@ -1192,7 +1498,13 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Explosive rose with magnetic pull'
+        description: 'Explosive rose with magnetic pull',
+        imageUrl: '/images/perfumes/atomic-rose.jpg',
+        reviews: [
+          { source: 'fragrantica', author: 'AtomicFan', rating: 5, text: 'Atomic Rose is a rose bomb in the best way. The oud backbone gives it depth. Magnetic indeed.', date: '2024' },
+          { source: 'reddit', author: 'u/atomic_rose', rating: 5, text: 'This makes you want to smell yourself all day. The rose-oud combo is intoxicating.', url: 'r/fragrance', date: '2024' },
+          { source: 'youtube', author: 'Curly Scents', rating: 5, text: 'Initio does rose differently. Atomic Rose is bold, confident, unforgettable.', date: '2023' }
+        ]
       },
       // More Arabian Dupes
       {
@@ -1210,7 +1522,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 9,
-        description: 'Powerful amber fragrance, BR540-inspired'
+        description: 'Powerful amber fragrance, BR540-inspired',
+      imageUrl: '/images/perfumes/qaaed.jpg'
       },
       {
         name: 'Ejaazi',
@@ -1227,7 +1540,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Intense spicy-oud composition'
+        description: 'Intense spicy-oud composition',
+      imageUrl: '/images/perfumes/ejaazi.jpg'
       },
       {
         name: 'Oud Mood Elixir',
@@ -1244,7 +1558,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Enhanced oud-rose experience'
+        description: 'Enhanced oud-rose experience',
+      imageUrl: '/images/perfumes/oud-mood-elixir.jpg'
       },
       {
         name: 'Al Qiam Gold',
@@ -1261,7 +1576,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 10,
         sillage: 9,
-        description: 'Luxurious spicy-vanilla oriental'
+        description: 'Luxurious spicy-vanilla oriental',
+      imageUrl: '/images/perfumes/al-qiam-gold.jpg'
       },
       {
         name: 'Perfume de Marly Clone',
@@ -1295,7 +1611,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 10,
         sillage: 9,
-        description: 'Rich oud-vanilla fusion'
+        description: 'Rich oud-vanilla fusion',
+      imageUrl: '/images/perfumes/zafeer-oud-vanille.jpg'
       },
       {
         name: 'Teriaq',
@@ -1312,7 +1629,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Pegasus alternative with spicy-vanilla'
+        description: 'Pegasus alternative with spicy-vanilla',
+      imageUrl: '/images/perfumes/teriaq.jpg'
       },
       {
         name: '9PM',
@@ -1329,7 +1647,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 9,
-        description: 'JPG Ultra Male alternative, sweet spicy'
+        description: 'JPG Ultra Male alternative, sweet spicy',
+      imageUrl: '/images/perfumes/9pm.jpg'
       },
       {
         name: 'Shumukh',
@@ -1346,7 +1665,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 10,
         sillage: 9,
-        description: 'Prestigious oud with frankincense'
+        description: 'Prestigious oud with frankincense',
+      imageUrl: '/images/perfumes/shumukh.jpg'
       },
       {
         name: 'Oud Satin Mood',
@@ -1363,7 +1683,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Soft, feminine oud with violet'
+        description: 'Soft, feminine oud with violet',
+      imageUrl: '/images/perfumes/oud-satin-mood.jpg'
       },
       {
         name: 'Grand Soir',
@@ -1380,7 +1701,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 10,
         sillage: 8,
-        description: 'Warm amber-vanilla evening scent'
+        description: 'Warm amber-vanilla evening scent',
+      imageUrl: '/images/perfumes/grand-soir.jpg'
       },
       {
         name: 'Opulent Musk',
@@ -1397,7 +1719,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Luxurious white musk composition'
+        description: 'Luxurious white musk composition',
+      imageUrl: '/images/perfumes/opulent-musk.jpg'
       },
       {
         name: 'La Yuqawam',
@@ -1414,7 +1737,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 10,
         sillage: 9,
-        description: 'Tuscan Leather alternative, powerful leather'
+        description: 'Tuscan Leather alternative, powerful leather',
+      imageUrl: '/images/perfumes/la-yuqawam.jpg'
       },
       {
         name: 'Ana Abiyedh Rouge',
@@ -1431,7 +1755,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 9,
-        description: 'BR540 Extrait alternative, more intense'
+        description: 'BR540 Extrait alternative, more intense',
+      imageUrl: '/images/perfumes/ana-abiyedh-rouge.jpg'
       },
       {
         name: 'Sehr Al Khaleej',
@@ -1448,7 +1773,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Magic of the Gulf, rich oriental'
+        description: 'Magic of the Gulf, rich oriental',
+      imageUrl: '/images/perfumes/sehr-al-khaleej.jpg'
       },
       {
         name: 'Shaghaf Oud',
@@ -1465,7 +1791,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Passionate oud with rose heart'
+        description: 'Passionate oud with rose heart',
+      imageUrl: '/images/perfumes/shaghaf-oud.jpg'
       },
       {
         name: 'Hunter Intense',
@@ -1482,7 +1809,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 8,
         sillage: 7,
-        description: 'Green Irish Tweed alternative'
+        description: 'Green Irish Tweed alternative',
+      imageUrl: '/images/perfumes/hunter-intense.jpg'
       },
       {
         name: 'Sillage',
@@ -1499,7 +1827,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 9,
-        description: 'BR540-inspired with saffron and cedar'
+        description: 'BR540-inspired with saffron and cedar',
+      imageUrl: '/images/perfumes/sillage.jpg'
       },
       {
         name: 'Oud Lavender',
@@ -1516,7 +1845,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Initio Rehab alternative'
+        description: 'Initio Rehab alternative',
+      imageUrl: '/images/perfumes/oud-lavender.jpg'
       },
       {
         name: 'Detour Noir',
@@ -1533,7 +1863,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Sophisticated spicy-sweet evening scent'
+        description: 'Sophisticated spicy-sweet evening scent',
+      imageUrl: '/images/perfumes/detour-noir.jpg'
       },
       {
         name: 'Red Tobacco',
@@ -1550,7 +1881,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 9,
         sillage: 8,
-        description: 'Herod-inspired tobacco-spice'
+        description: 'Herod-inspired tobacco-spice',
+      imageUrl: '/images/perfumes/red-tobacco.jpg'
       },
       {
         name: 'Tiziana Terenzi Kirke Clone',
@@ -1584,7 +1916,8 @@ const seedDatabase = async () => {
         concentration: 'EDP',
         longevity: 10,
         sillage: 9,
-        description: 'Fresh oud with aromatic opening'
+        description: 'Fresh oud with aromatic opening',
+      imageUrl: '/images/perfumes/amber-oud-exclusif-bleu.jpg'
       }
     ]
 

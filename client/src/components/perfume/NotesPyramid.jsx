@@ -4,62 +4,48 @@ function NotesPyramid({ notes }) {
   const { top = [], middle = [], base = [] } = notes
 
   const NoteTag = ({ note }) => (
-    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-white shadow-sm border border-gray-100">
+    <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-cream-100 text-dark-700 border border-cream-200 hover:bg-accent-100 hover:text-accent-700 hover:border-accent-200 transition-colors cursor-default">
       {note.name || note}
     </span>
   )
 
+  const NoteSection = ({ title, subtitle, notesArray, gradient }) => (
+    <div className="relative mb-8 last:mb-0">
+      <div className={`absolute inset-0 ${gradient} opacity-30 rounded-3xl`}></div>
+      <div className="relative text-center py-6 px-4">
+        <p className="text-xs uppercase tracking-widest text-dark-400 mb-1 font-semibold">{title}</p>
+        <p className="text-xs text-dark-300 mb-4">{subtitle}</p>
+        <div className="flex flex-wrap justify-center gap-2">
+          {notesArray.length > 0 ? (
+            notesArray.map((note, idx) => <NoteTag key={idx} note={note} />)
+          ) : (
+            <span className="text-dark-400 text-sm italic">No {title.toLowerCase()} listed</span>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+
   return (
-    <div className="max-w-xl mx-auto">
-      {/* Top Notes */}
-      <div className="relative mb-8">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-0 h-0 border-l-[200px] border-l-transparent border-r-[200px] border-r-transparent border-b-[120px] border-b-amber-100 opacity-50"></div>
-        </div>
-        <div className="relative text-center py-4">
-          <p className="text-xs uppercase tracking-wider text-gray-500 mb-2">Top Notes</p>
-          <p className="text-xs text-gray-400 mb-3">First impression • 15-30 min</p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {top.length > 0 ? (
-              top.map((note, idx) => <NoteTag key={idx} note={note} />)
-            ) : (
-              <span className="text-gray-400 text-sm">No top notes listed</span>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Middle Notes */}
-      <div className="relative mb-8">
-        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-16 bg-gradient-to-r from-transparent via-orange-50 to-transparent opacity-50"></div>
-        <div className="relative text-center py-4">
-          <p className="text-xs uppercase tracking-wider text-gray-500 mb-2">Heart Notes</p>
-          <p className="text-xs text-gray-400 mb-3">The heart • 30 min - 4 hrs</p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {middle.length > 0 ? (
-              middle.map((note, idx) => <NoteTag key={idx} note={note} />)
-            ) : (
-              <span className="text-gray-400 text-sm">No heart notes listed</span>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Base Notes */}
-      <div className="relative">
-        <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-amber-50 to-transparent opacity-50"></div>
-        <div className="relative text-center py-4">
-          <p className="text-xs uppercase tracking-wider text-gray-500 mb-2">Base Notes</p>
-          <p className="text-xs text-gray-400 mb-3">The foundation • 4+ hrs</p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {base.length > 0 ? (
-              base.map((note, idx) => <NoteTag key={idx} note={note} />)
-            ) : (
-              <span className="text-gray-400 text-sm">No base notes listed</span>
-            )}
-          </div>
-        </div>
-      </div>
+    <div className="max-w-2xl mx-auto">
+      <NoteSection 
+        title="Top Notes" 
+        subtitle="First impression • 15-30 min" 
+        notesArray={top}
+        gradient="bg-gradient-to-b from-accent-100 to-transparent"
+      />
+      <NoteSection 
+        title="Heart Notes" 
+        subtitle="The heart • 30 min - 4 hrs" 
+        notesArray={middle}
+        gradient="bg-gradient-to-b from-cream-200 to-transparent"
+      />
+      <NoteSection 
+        title="Base Notes" 
+        subtitle="The foundation • 4+ hrs" 
+        notesArray={base}
+        gradient="bg-gradient-to-t from-cream-200 to-transparent"
+      />
     </div>
   )
 }

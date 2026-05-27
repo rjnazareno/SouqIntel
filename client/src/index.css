@@ -1,43 +1,220 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @import "tailwindcss";
 
+@theme {
+  /* Warm cream/orange palette - Inspired by SCENTORA */
+  --color-cream-50: #FFFDF9;
+  --color-cream-100: #FDF6EC;
+  --color-cream-200: #FAF0E4;
+  --color-cream-300: #F5E6D3;
+  --color-cream-400: #EED9C4;
+  --color-cream-500: #E5C9AE;
+
+  /* Primary orange accent */
+  --color-accent-50: #FFF4ED;
+  --color-accent-100: #FFE6D5;
+  --color-accent-200: #FECBAA;
+  --color-accent-300: #FDA676;
+  --color-accent-400: #FB8A4B;
+  --color-accent-500: #E86835;
+  --color-accent-600: #D45A2B;
+  --color-accent-700: #B04424;
+  --color-accent-800: #8C3720;
+  --color-accent-900: #72301D;
+
+  /* Neutral dark tones */
+  --color-dark-50: #F7F7F7;
+  --color-dark-100: #E3E3E3;
+  --color-dark-200: #C8C8C8;
+  --color-dark-300: #A8A8A8;
+  --color-dark-400: #888888;
+  --color-dark-500: #6B6B6B;
+  --color-dark-600: #4A4A4A;
+  --color-dark-700: #333333;
+  --color-dark-800: #1A1A1A;
+  --color-dark-900: #0D0D0D;
+
+  /* Keep legacy colors for compatibility */
+  --color-gold-500: #E86835;
+  --color-gold-600: #D45A2B;
+
+  /* Font families for Tailwind v4 */
+  --font-display: 'Playfair Display', serif;
+  --font-arabic: 'Noto Sans Arabic', sans-serif;
+}
+
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply font-sans text-gray-900 bg-gray-50 m-0;
+    @apply font-sans text-dark-800 bg-cream-100 m-0 antialiased;
   }
 
   #root {
     @apply min-h-screen;
   }
+
+  /* Smooth page transitions */
+  .page-transition {
+    animation: fadeIn 0.4s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 }
 
 @layer components {
+  /* Primary CTA button - pill shaped with arrow */
   .btn-primary {
-    @apply px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-white font-semibold rounded-lg shadow-md hover:from-amber-700 hover:to-amber-600 transition-all duration-300;
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-accent-500 text-white font-medium rounded-full 
+           hover:bg-accent-600 active:bg-accent-700 transition-all duration-300 
+           shadow-lg shadow-accent-500/20 hover:shadow-xl hover:shadow-accent-500/30
+           hover:-translate-y-0.5;
   }
 
+  .btn-primary-outline {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-transparent text-dark-800 font-medium rounded-full 
+           border-2 border-dark-800 hover:bg-dark-800 hover:text-white transition-all duration-300;
+  }
+
+  /* Secondary button */
   .btn-secondary {
-    @apply px-6 py-3 bg-white text-amber-700 font-semibold rounded-lg shadow-md border border-amber-200 hover:bg-amber-50 transition-all duration-300;
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-white text-dark-700 font-medium rounded-full 
+           border border-dark-200 hover:border-accent-500 hover:text-accent-600 
+           transition-all duration-300 hover:-translate-y-0.5;
   }
 
+  /* Ghost button */
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-4 py-2 text-dark-600 font-medium 
+           hover:text-accent-500 transition-colors duration-200;
+  }
+
+  /* Circle icon button */
+  .btn-icon {
+    @apply w-12 h-12 rounded-full flex items-center justify-center
+           bg-dark-800 text-white hover:bg-dark-700 transition-all duration-200;
+  }
+
+  /* Modern card */
   .card {
-    @apply bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300;
+    @apply bg-white rounded-2xl shadow-sm border border-dark-100/50
+           hover:shadow-lg hover:shadow-dark-200/50 hover:-translate-y-1
+           transition-all duration-300 overflow-hidden;
   }
 
+  .card-flat {
+    @apply bg-white rounded-2xl border border-dark-100/50 overflow-hidden;
+  }
+
+  /* Input fields */
   .input-field {
-    @apply w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition-all duration-200;
+    @apply w-full px-5 py-3.5 bg-white border border-dark-200 rounded-full 
+           focus:ring-2 focus:ring-accent-500/20 focus:border-accent-500 
+           outline-none transition-all duration-200 text-dark-800 
+           placeholder:text-dark-400;
   }
 
+  .input-field-box {
+    @apply w-full px-4 py-3 bg-white border border-dark-200 rounded-xl 
+           focus:ring-2 focus:ring-accent-500/20 focus:border-accent-500 
+           outline-none transition-all duration-200;
+  }
+
+  /* Badges */
   .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
   }
 
+  .badge-accent {
+    @apply bg-accent-100 text-accent-700;
+  }
+
+  .badge-dark {
+    @apply bg-dark-800 text-white;
+  }
+
+  .badge-light {
+    @apply bg-dark-100 text-dark-600;
+  }
+
+  .badge-success {
+    @apply bg-green-100 text-green-700;
+  }
+
+  /* Section title styling */
+  .section-title {
+    @apply font-display text-3xl md:text-4xl font-semibold text-dark-800 tracking-tight;
+  }
+
+  .section-subtitle {
+    @apply text-dark-500 text-lg;
+  }
+
+  /* Legacy support */
   .badge-gold {
-    @apply bg-amber-100 text-amber-800;
+    @apply bg-accent-100 text-accent-700;
   }
 
   .badge-green {
-    @apply bg-green-100 text-green-800;
+    @apply bg-green-100 text-green-700;
   }
+}
+
+/* Marquee animation for scrolling banner */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Smooth hover transitions for images */
+.img-hover-zoom {
+  overflow: hidden;
+}
+
+.img-hover-zoom img {
+  transition: transform 0.5s ease;
+}
+
+.img-hover-zoom:hover img {
+  transform: scale(1.05);
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream-200);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-dark-300);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-dark-400);
 }
