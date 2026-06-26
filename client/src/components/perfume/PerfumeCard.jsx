@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom'
 
-function PerfumeCard({ perfume, similarity, savings }) {
+function PerfumeCard({ perfume, similarity, savings, relationshipLabel, relationshipTone = 'alternative' }) {
   if (!perfume) return null
+
+  const relationshipClasses = relationshipTone === 'original'
+    ? 'bg-dark-800 text-white'
+    : 'bg-accent-500 text-white'
 
   return (
     <Link to={`/perfume/${perfume._id}`} className="card group block">
@@ -21,6 +25,11 @@ function PerfumeCard({ perfume, similarity, savings }) {
 
         {/* Badges */}
         <div className="absolute top-4 left-4 flex flex-col gap-2">
+          {relationshipLabel && (
+            <span className={`badge shadow-lg ${relationshipClasses}`}>
+              {relationshipLabel}
+            </span>
+          )}
           {similarity && (
             <span className="badge bg-dark-800 text-white shadow-lg">
               {similarity}% match

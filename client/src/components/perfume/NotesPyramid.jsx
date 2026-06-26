@@ -1,15 +1,13 @@
-function NotesPyramid({ notes }) {
-  if (!notes) return null
-
-  const { top = [], middle = [], base = [] } = notes
-
-  const NoteTag = ({ note }) => (
+function NoteTag({ note }) {
+  return (
     <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-cream-100 text-dark-700 border border-cream-200 hover:bg-accent-100 hover:text-accent-700 hover:border-accent-200 transition-colors cursor-default">
       {note.name || note}
     </span>
   )
+}
 
-  const NoteSection = ({ title, subtitle, notesArray, gradient }) => (
+function NoteSection({ title, subtitle, notesArray, gradient }) {
+  return (
     <div className="relative mb-8 last:mb-0">
       <div className={`absolute inset-0 ${gradient} opacity-30 rounded-3xl`}></div>
       <div className="relative text-center py-6 px-4">
@@ -25,6 +23,12 @@ function NotesPyramid({ notes }) {
       </div>
     </div>
   )
+}
+
+function NotesPyramid({ notes }) {
+  if (!notes) return null
+
+  const { top = [], middle = [], base = [] } = notes
 
   return (
     <div className="max-w-2xl mx-auto">

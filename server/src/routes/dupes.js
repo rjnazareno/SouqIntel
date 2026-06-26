@@ -1,12 +1,19 @@
 import express from 'express'
+import mongoose from 'mongoose'
 import DupeRelation from '../models/DupeRelation.js'
 import Perfume from '../models/Perfume.js'
+import { getFallbackDupes, getPopularFallbackDupes } from '../data/fallbackData.js'
 
 const router = express.Router()
+const isMongoConnected = () => mongoose.connection.readyState === 1
 
 // GET /api/dupes/popular - Get popular dupe pairs
 router.get('/popular', async (req, res) => {
   try {
+    if (!isMongoConnected()) {
+      return res.json({ success: true, data: getPopularFallbackDupes(), source: 'fallback' })
+    }
+
     const dupes = await DupeRelation.find()
       .populate({
         path: 'original',
@@ -30,8 +37,23 @@ router.get('/:perfumeId', async (req, res) => {
   try {
     const { perfumeId } = req.params
 
-    // Find dupes where this perfume is the original
-    const dupes = await DupeRelation.find({ original: perfumeId })
+    if (!isMongoConnected()) {
+      return res.json({ success: true, data: getFallbackDupes(perfumeId), source: 'fallback' })
+    }
+
+    const dupes = await DupeRelation.find({
+      $or: [
+        { original: perfumeId },
+        { dupe: perfumeId }
+      ]
+    })
+      .populate({
+        path: 'original',
+        populate: [
+          { path: 'brand', select: 'name origin type' },
+          { path: 'notes.top notes.middle notes.base', select: 'name category' }
+        ]
+      })
       .populate({
         path: 'dupe',
         populate: [

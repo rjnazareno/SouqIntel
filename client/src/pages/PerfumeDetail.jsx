@@ -4,6 +4,9 @@ import PerfumeCard from '../components/perfume/PerfumeCard'
 import NotesPyramid from '../components/perfume/NotesPyramid'
 import api from '../services/api'
 
+const middleEasternTypes = ['arabian', 'clone']
+const getId = (item) => String(item?._id || item?.id || '')
+
 function PerfumeDetail() {
   const { id } = useParams()
   const [perfume, setPerfume] = useState(null)
@@ -56,6 +59,35 @@ function PerfumeDetail() {
     )
   }
 
+  const isMiddleEastern = middleEasternTypes.includes(perfume.type)
+  const relatedPerfumes = dupes
+    .map((relation) => {
+      const original = relation.original
+      const alternative = relation.dupe || relation.perfume
+      const currentId = getId(perfume)
+      const originalId = getId(original)
+      const alternativeId = getId(alternative)
+      const relatedPerfume = originalId === currentId
+        ? alternative
+        : alternativeId === currentId
+          ? original
+          : isMiddleEastern
+            ? original
+            : alternative
+
+      if (!relatedPerfume || getId(relatedPerfume) === currentId) return null
+
+      return {
+        ...relation,
+        relatedPerfume,
+        relationshipLabel: isMiddleEastern ? 'Original fragrance' : 'Middle Eastern Alternative',
+        relationshipTone: isMiddleEastern ? 'original' : 'alternative'
+      }
+    })
+    .filter(Boolean)
+
+  const primaryRelatedPerfume = relatedPerfumes[0]?.relatedPerfume
+
   return (
     <div className="min-h-screen pt-20 bg-cream-100 page-transition">
       {/* Breadcrumb */}
@@ -100,6 +132,44 @@ function PerfumeDetail() {
                 <span className="badge badge-light capitalize">{perfume.gender}</span>
                 <span className="badge badge-light capitalize">{perfume.concentration}</span>
               </div>
+
+              {primaryRelatedPerfume && (
+                <Link
+                  to={`/perfume/${primaryRelatedPerfume._id}`}
+                  className={`block rounded-2xl border p-5 transition-colors ${
+                    isMiddleEastern
+                      ? 'bg-dark-800 text-white border-dark-800 hover:bg-dark-700'
+                      : 'bg-accent-50 border-accent-100 hover:bg-accent-100/70'
+                  }`}
+                >
+                  <p className={`text-xs font-semibold uppercase tracking-widest mb-2 ${
+                    isMiddleEastern ? 'text-cream-200' : 'text-accent-600'
+                  }`}>
+                    {isMiddleEastern ? 'This is the Middle Eastern dupe of' : 'Middle Eastern alternative available'}
+                  </p>
+                  <div className="flex items-center gap-4">
+                    {primaryRelatedPerfume.imageUrl && (
+                      <img
+                        src={primaryRelatedPerfume.imageUrl}
+                        alt={primaryRelatedPerfume.name}
+                        className="w-16 h-16 rounded-xl object-cover bg-white"
+                      />
+                    )}
+                    <div>
+                      <p className={`font-display text-2xl font-semibold ${
+                        isMiddleEastern ? 'text-white' : 'text-dark-800'
+                      }`}>
+                        {primaryRelatedPerfume.name}
+                      </p>
+                      <p className={`text-sm ${
+                        isMiddleEastern ? 'text-cream-200' : 'text-dark-500'
+                      }`}>
+                        {primaryRelatedPerfume.brand?.name}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              )}
 
               {/* Price Range */}
               <div className="bg-cream-100 rounded-2xl p-6">
@@ -244,18 +314,25 @@ function PerfumeDetail() {
         </div>
 
         {/* Dupes Section */}
-        {dupes.length > 0 && (
+        {relatedPerfumes.length > 0 && (
           <div className="mt-16">
-            <h2 className="text-2xl font-display font-semibold text-dark-800 mb-8">
-              {perfume.type === 'arabian' ? 'This perfume is a dupe for' : 'Middle Eastern Alternatives'}
-            </h2>
+            <div className="mb-8">
+              <p className="text-xs font-semibold uppercase tracking-widest text-accent-500 mb-2">
+                {isMiddleEastern ? 'Original fragrance' : 'Affordable Middle Eastern options'}
+              </p>
+              <h2 className="text-2xl font-display font-semibold text-dark-800">
+                {isMiddleEastern ? `${perfume.name} is a dupe of` : `Middle Eastern alternatives to ${perfume.name}`}
+              </h2>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {dupes.map((dupe) => (
+              {relatedPerfumes.map((relation) => (
                 <PerfumeCard
-                  key={dupe._id}
-                  perfume={dupe.dupe || dupe.original}
-                  similarity={dupe.similarityScore}
-                  savings={dupe.priceComparison?.savings}
+                  key={relation._id}
+                  perfume={relation.relatedPerfume}
+                  similarity={relation.similarityScore}
+                  savings={relation.priceComparison?.savings}
+                  relationshipLabel={relation.relationshipLabel}
+                  relationshipTone={relation.relationshipTone}
                 />
               ))}
             </div>

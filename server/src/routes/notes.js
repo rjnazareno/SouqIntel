@@ -1,13 +1,20 @@
 import express from 'express'
+import mongoose from 'mongoose'
 import Note from '../models/Note.js'
+import { getFallbackNotes } from '../data/fallbackData.js'
 
 const router = express.Router()
+const isMongoConnected = () => mongoose.connection.readyState === 1
 
 // GET /api/notes - Get all notes
 router.get('/', async (req, res) => {
   try {
     const { category } = req.query
     const query = category ? { category } : {}
+
+    if (!isMongoConnected()) {
+      return res.json({ success: true, data: getFallbackNotes(category), source: 'fallback' })
+    }
 
     const notes = await Note.find(query).sort({ name: 1 })
 
@@ -20,6 +27,16 @@ router.get('/', async (req, res) => {
 // GET /api/notes/:id - Get single note
 router.get('/:id', async (req, res) => {
   try {
+    if (!isMongoConnected()) {
+      const note = getFallbackNotes().find((item) => item.name === req.params.id)
+
+      if (!note) {
+        return res.status(404).json({ success: false, message: 'Note not found' })
+      }
+
+      return res.json({ success: true, data: note, source: 'fallback' })
+    }
+
     const note = await Note.findById(req.params.id)
 
     if (!note) {
