@@ -100,6 +100,233 @@ const productImages = {
   'ysl-y-edp': '/images/perfumes/expanded/ysl-y-edp.jpg'
 }
 
+const feedbackById = {
+  'lattafa-asad': [
+    {
+      source: 'reddit',
+      author: 'r/DesiFragranceAddicts reviewer',
+      text: 'Users describe Asad as strong value for the money, close enough to Sauvage Elixir after the bold opening settles, with a spicy drydown that works best in cooler weather.',
+      url: 'https://www.reddit.com/r/DesiFragranceAddicts/comments/1jhtezh/lattafa_asad_review_the_dior_sauvage_elixir_dupe/'
+    },
+    {
+      source: 'reddit',
+      author: 'r/fragranceclones discussion',
+      text: 'Feedback is mixed on performance: some users find it close to Sauvage Elixir with a twist, while others recommend letting the bottle mature before judging projection.',
+      url: 'https://www.reddit.com/r/fragranceclones/comments/1csov8q/lattafa_asad_honest_review/'
+    }
+  ],
+  'afnan-modest-une': [
+    {
+      source: 'community',
+      author: 'Community consensus',
+      text: 'Often recommended as a fresher Sauvage-style option for people who want the blue-fragrance profile at a lower price point.',
+      url: 'https://www.fragrantica.com/board/'
+    }
+  ],
+  'lattafa-fakhar-black': [
+    {
+      source: 'reddit',
+      author: 'r/fragranceclones reviewer',
+      text: 'Users call Fakhar Black an easy everyday reach that smells good for the price, though several note it does not fully capture the depth of Y EDP.',
+      url: 'https://www.reddit.com/r/fragranceclones/comments/1hth7ac/lattafa_fakhar_black_review/'
+    },
+    {
+      source: 'reddit',
+      author: 'r/DesiFragranceAddicts comparison',
+      text: 'Compared with other Y-style clones, users report solid projection for the first couple of hours and better longevity than some similar alternatives.',
+      url: 'https://www.reddit.com/r/DesiFragranceAddicts/comments/1fvx0ut/ysl_y_vs_ma_yeah_vs_lattafa_fakhar/'
+    }
+  ],
+  '9pm': [
+    {
+      source: 'reddit',
+      author: 'r/Colognes comparison',
+      text: 'Users frequently describe 9PM as very close to Ultra Male, with a sweeter caramel or bubblegum edge and excellent value compared with the designer bottle.',
+      url: 'https://www.reddit.com/r/Colognes/comments/16mktqm/ultra_male_va_afnan_9pm/'
+    },
+    {
+      source: 'reddit',
+      author: 'r/fragranceclones discussion',
+      text: 'Some users love the sweet lavender-vanilla profile, while others warn it can lean very sweet and batch performance can vary.',
+      url: 'https://www.reddit.com/r/fragranceclones/comments/1pvrtth/afnan_9pm_too_sweet_for_a_man/'
+    }
+  ],
+  'armaf-tres-nuit': [
+    {
+      source: 'community',
+      author: 'Clone community feedback',
+      text: 'Commonly discussed as an affordable Green Irish Tweed-style fresh green scent, with users usually framing it as easy to wear rather than exactingly luxurious.',
+      url: 'https://www.reddit.com/r/fragranceclones/'
+    }
+  ],
+  'armaf-club-de-nuit-sillage': [
+    {
+      source: 'reddit',
+      author: 'r/fragrance reviewer',
+      text: 'Reviewers praise Sillage for its airy, musky, citrus-aquatic profile and say it lands very close to Silver Mountain Water while feeling powerful in warm weather.',
+      url: 'https://www.reddit.com/r/fragrance/comments/lnhvbt/fragrance_review_3_armaf_club_de_nuit_sillage/'
+    },
+    {
+      source: 'reddit',
+      author: 'r/fragranceclones comparison',
+      text: 'Side-by-side feedback says it can be a little harsher than Creed but often lasts longer and projects more strongly.',
+      url: 'https://www.reddit.com/r/fragranceclones/comments/q8nvn5/silver_mountain_water_genuine_vs_clone_armaf_club/'
+    }
+  ],
+  'armaf-club-de-nuit-milestone': [
+    {
+      source: 'reddit',
+      author: 'r/fragranceclones reviewer',
+      text: 'Users highlight Milestone as clean, cooling, aquatic, and melon-forward, with a fresh marine profile that makes it easy to recommend for summer.',
+      url: 'https://www.reddit.com/r/fragranceclones/comments/13w6dty/club_de_nuit_milestone_review/'
+    },
+    {
+      source: 'fragrantica',
+      author: 'Fragrantica reviewers',
+      text: 'Community reviews point to strong projection and longevity, often mentioning the orange, cucumber, melon, salty musk feel.',
+      url: 'https://www.fragrantica.com/perfume/Armaf/Club-de-Nuit-Milestone-64104.html'
+    }
+  ],
+  'al-haramain-detour-noir': [
+    {
+      source: 'fragrantica',
+      author: 'Fragrantica reviewers',
+      text: 'Users generally frame Detour Noir as a very good Layton clone for the price, though some say it is simpler and less evolving than the original.',
+      url: 'https://www.fragrantica.com/perfume/Al-Haramain-Perfumes/Detour-Noir-70748.html'
+    },
+    {
+      source: 'reddit',
+      author: 'r/fragranceclones reviewer',
+      text: 'Reddit feedback often emphasizes the apple-vanilla opening and warm powdery drydown, with the scent reading cozy rather than fresh.',
+      url: 'https://www.reddit.com/r/fragranceclones/comments/15031vq/a_review_of_detour_noir/'
+    }
+  ],
+  'maison-alhambra-kismet-angel': [
+    {
+      source: 'fragrantica',
+      author: 'Fragrantica reviewers',
+      text: 'Reviewers often call Kismet Angel one of the better Angels’ Share alternatives, less boozy than the original but still carrying the same warm DNA.',
+      url: 'https://www.fragrantica.com/perfume/Maison-Alhambra/Kismet-Angel-79015.html'
+    },
+    {
+      source: 'reddit',
+      author: 'r/DesiFragranceAddicts reviewer',
+      text: 'Users describe it as more balanced and less loud than Khamrah, with vanilla, amber, and boozy facets plus moderate performance.',
+      url: 'https://www.reddit.com/r/DesiFragranceAddicts/comments/1oe1238/quick_review_maison_alhambra_kismet_angel_now/'
+    }
+  ],
+  'maison-alhambra-lovely-cherie': [
+    {
+      source: 'fragrantica',
+      author: 'Fragrantica reviewers',
+      text: 'Users describe Lovely Cherie as strongly cherry-forward and very similar to Lost Cherry, though some become nose-blind to it after a couple of hours.',
+      url: 'https://www.fragrantica.com/perfume/Maison-Alhambra/Lovely-Cherie-79944.html'
+    },
+    {
+      source: 'reddit',
+      author: 'r/fragranceclones discussion',
+      text: 'Several users call it one of the best Lost Cherry clones they have tried; others note longevity can vary but the scent is recognizable.',
+      url: 'https://www.reddit.com/r/fragranceclones/comments/13dr79m/thoughts_on_maison_alhambra_lovely_cherie/'
+    }
+  ],
+  'maison-alhambra-porto-neroli': [
+    {
+      source: 'fragrantica',
+      author: 'Fragrantica reviewers',
+      text: 'Users say Porto Neroli captures the Neroli Portofino profile closely, with a bright citrus opening and neroli-heavy drydown, but modest longevity.',
+      url: 'https://www.fragrantica.com/perfume/Maison-Alhambra/Porto-Neroli-79939.html'
+    },
+    {
+      source: 'reddit',
+      author: 'r/fragranceclones discussion',
+      text: 'Reddit feedback is split: many enjoy the clean hot-weather scent, while others warn projection and longevity are soft.',
+      url: 'https://www.reddit.com/r/fragranceclones/comments/1e49p6z/would_you_guys_recommend_porto_neroli/'
+    }
+  ],
+  'maison-alhambra-tobacco-touch': [
+    {
+      source: 'reddit',
+      author: 'r/DesiFragranceAddicts reviewer',
+      text: 'Users say Tobacco Touch becomes more appealing on skin after the opening and works as a budget Tobacco Vanille-style scent if you enjoy tobacco notes.',
+      url: 'https://www.reddit.com/r/DesiFragranceAddicts/comments/1f4nhvg/maison_alhambra_tobacco_touch_for_the/'
+    },
+    {
+      source: 'fragrantica',
+      author: 'Fragrantica reviewers',
+      text: 'Fragrantica feedback often mentions cinnamon, tobacco, vanilla sweetness, and strong performance, though some find it spicier than expected.',
+      url: 'https://www.fragrantica.com/perfume/Maison-Alhambra/Tobacco-Touch-79943.html'
+    }
+  ],
+  'lattafa-badee-al-oud-oud-for-glory': [
+    {
+      source: 'fragrantica',
+      author: 'Fragrantica reviewers',
+      text: 'Users praise Oud for Glory as a strong budget oud that stands on its own while staying close to the Oud for Greatness idea.',
+      url: 'https://www.fragrantica.com/perfume/Lattafa-Perfumes/Bade-e-Al-Oud-Oud-for-Glory-64948.html'
+    },
+    {
+      source: 'reddit',
+      author: 'r/fragranceclones reviewer',
+      text: 'Reddit feedback is more polarized: oud fans call it a good cheap pickup, while others find the profile synthetic or too heavy.',
+      url: 'https://www.reddit.com/r/fragranceclones/comments/1hruxcs/lattafa_oud_for_glory_review/'
+    }
+  ],
+  'fragrance-world-after-effect': [
+    {
+      source: 'reddit',
+      author: 'r/fragranceclones reviewer',
+      text: 'Users often describe After Effect as powerful and close to Side Effect’s boozy-spicy DNA, but stronger and sometimes cloying in heat.',
+      url: 'https://www.reddit.com/r/fragranceclones/comments/1cx0ta6/after_effect_by_fa_parisfragrance_worldfrench/'
+    },
+    {
+      source: 'fragrantica',
+      author: 'Fragrantica reviewers',
+      text: 'Feedback is sharply split: some users love the scent after drydown, while others find cumin, rubbery saffron, or batch variance hard to tolerate.',
+      url: 'https://www.fragrantica.com/perfume/French-Avenue/After-Effect-94703.html'
+    }
+  ],
+  'lattafa-badee-al-oud-amethyst': [
+    {
+      source: 'reddit',
+      author: 'r/fragranceclones community',
+      text: 'Often recommended for people who want a rose-oud Middle Eastern profile with strong sweetness and a bold, room-filling presence.',
+      url: 'https://www.reddit.com/r/fragranceclones/'
+    }
+  ],
+  'armaf-club-de-nuit-untold': [
+    {
+      source: 'community',
+      author: 'Clone community feedback',
+      text: 'Frequently recommended as a Baccarat Rouge 540 Extrait-style alternative, especially for people who want the saffron-amber sweetness with stronger value.',
+      url: 'https://www.fragrantica.com/perfume/Armaf/'
+    }
+  ],
+  'afnan-supremacy-not-only-intense': [
+    {
+      source: 'community',
+      author: 'Clone community feedback',
+      text: 'Users commonly position it between Aventus and Hacivat inspirations, with a dense fruity opening and stronger, darker performance than many fresh clones.',
+      url: 'https://www.reddit.com/r/fragranceclones/'
+    }
+  ],
+  'afnan-turathi-blue': [
+    {
+      source: 'community',
+      author: 'Clone community feedback',
+      text: 'Often praised as a bright grapefruit-amber style alternative to Tygar, with users highlighting freshness, versatility, and strong value.',
+      url: 'https://www.reddit.com/r/fragranceclones/'
+    }
+  ],
+  'rasasi-hawas': [
+    {
+      source: 'community',
+      author: 'Clone community feedback',
+      text: 'Users consistently describe Hawas as sweet, aquatic, and very attention-grabbing, with strong performance compared with many fresh designer releases.',
+      url: 'https://www.fragrantica.com/perfume/Rasasi/'
+    }
+  ]
+}
+
 const brands = {
   afnan: { _id: 'afnan', name: 'Afnan', origin: 'UAE', type: 'arabian' },
   ajmal: { _id: 'ajmal', name: 'Ajmal', origin: 'UAE', type: 'arabian' },
@@ -214,7 +441,8 @@ const perfume = ({
   sillage,
   imageUrl: productImages[id] || '',
   description,
-  notes: noteProfiles[category] || noteProfiles.amber
+  notes: noteProfiles[category] || noteProfiles.amber,
+  reviews: feedbackById[id] || []
 })
 
 const original = (id, name, brand, category, gender = 'unisex') => perfume({

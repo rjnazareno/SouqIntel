@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import axios from 'axios'
+import api from '../services/api'
 
 function ChatBot() {
   const [isOpen, setIsOpen] = useState(false)
@@ -50,14 +50,14 @@ function ChatBot() {
           content: msg.content
         }))
 
-      const response = await axios.post('http://localhost:5000/api/chat', {
+      const response = await api.sendChatMessage({
         message: input,
         conversationHistory
       })
 
       const aiMessage = {
         role: 'assistant',
-        content: response.data.data.response,
+        content: response.data.response,
         timestamp: new Date()
       }
 
@@ -66,7 +66,7 @@ function ChatBot() {
       console.error('Chat error:', error)
       const errorMessage = {
         role: 'assistant',
-        content: error.response?.data?.error || '❌ Sorry, I encountered an error. Please make sure the Gemini API key is configured.',
+        content: error.response?.data?.error || 'Sorry, I encountered an error. Please make sure the OpenAI API key is configured in server/.env.',
         timestamp: new Date()
       }
       setMessages(prev => [...prev, errorMessage])

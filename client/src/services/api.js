@@ -150,6 +150,9 @@ const api = {
     getFallbackNotes
   ),
 
+  // Chat
+  sendChatMessage: (payload) => apiClient.post('/chat', payload),
+
   // Auth
   login: (credentials) => apiClient.post('/auth/login', credentials),
 
