@@ -334,13 +334,17 @@ const brands = {
   amouage: { _id: 'amouage', name: 'Amouage', origin: 'Oman', type: 'niche' },
   armani: { _id: 'giorgio-armani', name: 'Giorgio Armani', origin: 'Italy', type: 'designer' },
   armaf: { _id: 'armaf', name: 'Armaf', origin: 'UAE', type: 'arabian' },
+  burberry: { _id: 'burberry', name: 'Burberry', origin: 'UK', type: 'designer' },
   bvlgari: { _id: 'bvlgari', name: 'Bvlgari', origin: 'Italy', type: 'designer' },
   byredo: { _id: 'byredo', name: 'Byredo', origin: 'Sweden', type: 'niche' },
   carolinaHerrera: { _id: 'carolina-herrera', name: 'Carolina Herrera', origin: 'USA', type: 'designer' },
   chanel: { _id: 'chanel', name: 'Chanel', origin: 'France', type: 'designer' },
   creed: { _id: 'creed', name: 'Creed', origin: 'UK', type: 'niche' },
   dior: { _id: 'dior', name: 'Dior', origin: 'France', type: 'designer' },
+  esteeLauder: { _id: 'estee-lauder', name: 'Estée Lauder', origin: 'USA', type: 'designer' },
   fragranceWorld: { _id: 'fragrance-world', name: 'Fragrance World', origin: 'UAE', type: 'arabian' },
+  frenchAvenue: { _id: 'french-avenue', name: 'French Avenue', origin: 'UAE', type: 'arabian' },
+  giardiniDiToscana: { _id: 'giardini-di-toscana', name: 'Giardini di Toscana', origin: 'Italy', type: 'niche' },
   givenchy: { _id: 'givenchy', name: 'Givenchy', origin: 'France', type: 'designer' },
   initio: { _id: 'initio', name: 'Initio', origin: 'France', type: 'niche' },
   jeanPaulGaultier: { _id: 'jean-paul-gaultier', name: 'Jean Paul Gaultier', origin: 'France', type: 'designer' },
@@ -351,6 +355,8 @@ const brands = {
   maisonAlhambra: { _id: 'maison-alhambra', name: 'Maison Alhambra', origin: 'UAE', type: 'arabian' },
   maisonFrancisKurkdjian: { _id: 'maison-francis-kurkdjian', name: 'Maison Francis Kurkdjian', origin: 'France', type: 'niche' },
   margiela: { _id: 'maison-margiela', name: 'Maison Margiela', origin: 'France', type: 'designer' },
+  miuMiu: { _id: 'miu-miu', name: 'Miu Miu', origin: 'Italy', type: 'designer' },
+  ninaRicci: { _id: 'nina-ricci', name: 'Nina Ricci', origin: 'France', type: 'designer' },
   nishane: { _id: 'nishane', name: 'Nishane', origin: 'Turkey', type: 'niche' },
   pacoRabanne: { _id: 'paco-rabanne', name: 'Paco Rabanne', origin: 'Spain', type: 'designer' },
   parisCorner: { _id: 'paris-corner', name: 'Paris Corner', origin: 'UAE', type: 'arabian' },
@@ -476,9 +482,25 @@ const clone = (id, name, brand, category, gender = 'unisex') => ({
   type: 'clone'
 })
 
+// 'Top:cat, Top:cat / Heart:cat / Base:cat' -> { top, middle, base }
+const pyramid = (spec) => {
+  const [top, middle, base] = spec.split(' / ').map((layer) => layer.split(', ').map((n) => note(...n.split(':'))))
+  return { top, middle, base }
+}
+
+// Trending 2026 entries carry real notes and copy instead of the category template.
+const trend = (entry, notes, description, extra = {}) => ({
+  ...entry,
+  imageUrl: entry.imageUrl || `/images/perfumes/expanded/${entry._id}.jpg`,
+  notes: pyramid(notes),
+  description,
+  trending: true,
+  ...extra
+})
+
 export const expandedPerfumes = [
   original('dior-sauvage-elixir', 'Sauvage Elixir', brands.dior, 'spicy', 'masculine'),
-  alternative('lattafa-asad', 'Asad', brands.lattafa, 'spicy', 'masculine'),
+  { ...alternative('lattafa-asad', 'Asad', brands.lattafa, 'spicy', 'masculine'), trending: true },
   alternative('afnan-modest-une', 'Modest Une', brands.afnan, 'fresh', 'masculine'),
   original('ysl-y-edp', 'Y Eau de Parfum', brands.ysl, 'aromatic', 'masculine'),
   alternative('lattafa-fakhar-black', 'Fakhar Black', brands.lattafa, 'aromatic', 'masculine'),
@@ -573,7 +595,78 @@ export const expandedPerfumes = [
   original('paco-rabanne-invictus', 'Invictus', brands.pacoRabanne, 'fresh', 'masculine'),
   alternative('rasasi-hawas', 'Hawas', brands.rasasi, 'fresh', 'masculine'),
   original('paco-rabanne-one-million', '1 Million', brands.pacoRabanne, 'spicy', 'masculine'),
-  clone('armaf-club-de-nuit-man', 'Club de Nuit Man', brands.armaf, 'spicy', 'masculine')
+  clone('armaf-club-de-nuit-man', 'Club de Nuit Man', brands.armaf, 'spicy', 'masculine'),
+
+  // Trending 2026: notes from Fragrantica, cross-checked with retailers
+  trend(original('parfums-de-marly-althair', 'Althaïr', brands.parfumsDeMarly, 'gourmand', 'masculine'),
+    'Cinnamon:spicy, Orange Blossom:floral, Cardamom:spicy / Bourbon Vanilla:gourmand, Elemi:woody / Praline:gourmand, Tonka Bean:gourmand, Guaiac Wood:woody',
+    'A warm vanilla-praline with cinnamon and cardamom that inspired a wave of Middle Eastern clones.'),
+  trend(clone('french-avenue-liquid-brun', 'Liquid Brun', brands.frenchAvenue, 'gourmand', 'masculine'),
+    'Cinnamon:spicy, Orange Blossom:floral, Cardamom:spicy / Bourbon Vanilla:gourmand, Elemi:woody / Praline:gourmand, Ambroxan:animalic, Guaiac Wood:woody',
+    'Spiced vanilla praline in the Althaïr style, and one of the most popular releases on Fragrantica this year.'),
+  trend(original('giardini-di-toscana-bianco-latte', 'Bianco Latte', brands.giardiniDiToscana, 'gourmand', 'unisex'),
+    'Caramel:gourmand / Honey:gourmand, Coumarin:gourmand / Vanilla:gourmand, White Musk:animalic',
+    'A milky caramel and honey skin scent that went viral on fragrance social media.'),
+  trend(clone('lattafa-eclaire', 'Eclaire', brands.lattafa, 'gourmand', 'feminine'),
+    'Caramel:gourmand, Milk:gourmand, Sugar:gourmand / White Flowers:floral, Honey:gourmand / Vanilla:gourmand, Praline:gourmand, Musk:animalic',
+    'Caramel, milk and honey. The go-to budget take on Bianco Latte.'),
+  trend(original('burberry-goddess', 'Goddess', brands.burberry, 'gourmand', 'feminine'),
+    'Vanilla:gourmand, Lavender:fresh, Cacao:gourmand, Ginger:spicy / Vanilla Caviar:gourmand / Vanilla Absolute:gourmand',
+    'Three vanillas layered over lavender and cacao.'),
+  trend(alternative('lattafa-angham', 'Angham', brands.lattafa, 'gourmand', 'unisex'),
+    'Mandarin:citrus, Ginger:spicy, Pink Pepper:spicy / Lavender:fresh, Praline:gourmand, Cacao:gourmand / Vanilla:gourmand, Amber:oriental, Musk:animalic',
+    'Praline-vanilla in the Goddess direction, sweeter and lighter on lavender.'),
+  trend(original('jpg-scandal-pour-homme', 'Scandal Pour Homme', brands.jeanPaulGaultier, 'amber', 'masculine'),
+    'Mandarin Orange:citrus, Clary Sage:fresh / Caramel:gourmand, Tonka Bean:gourmand / Vetiver:woody',
+    'Caramel and tonka, cut with mandarin and clary sage.',
+    { concentration: 'EDT' }),
+  trend(clone('armaf-odyssey-mandarin-sky', 'Odyssey Mandarin Sky', brands.armaf, 'amber', 'masculine'),
+    'Mandarin Orange:citrus, Saffron:spicy, Sage:fresh / Caramel:gourmand, Tonka Bean:gourmand, Marigold:floral / Ambroxan:animalic, Cedar:woody, Vetiver:woody',
+    'Bright mandarin over caramel-tonka; reviewers say the drydown is close to Scandal Pour Homme.'),
+  trend(original('jpg-le-male-elixir', 'Le Male Elixir', brands.jeanPaulGaultier, 'amber', 'masculine'),
+    'Lavender:fresh, Mint:fresh / Vanilla:gourmand, Benzoin:oriental / Honey:gourmand, Tonka Bean:gourmand, Tobacco:woody',
+    'Honeyed lavender with tobacco and tonka.',
+    { concentration: 'Parfum' }),
+  trend(clone('lattafa-the-kingdom', 'The Kingdom For Men', brands.lattafa, 'amber', 'masculine'),
+    'Lavender:fresh, Mint:fresh, Sage:fresh / Vanilla:gourmand, Tobacco:woody, Orange Blossom:floral / Tonka Bean:gourmand, Benzoin:oriental, Labdanum:oriental',
+    'Lavender, tobacco and vanilla in the Le Male Elixir style, minus some of the honey.'),
+  trend(alternative('lattafa-khamrah', 'Khamrah', brands.lattafa, 'gourmand', 'unisex'),
+    'Cinnamon:spicy, Nutmeg:spicy, Bergamot:citrus / Dates:gourmand, Praline:gourmand, Tuberose:floral / Vanilla:gourmand, Tonka Bean:gourmand, Amberwood:woody',
+    'The date-and-cinnamon gourmand that put Lattafa on the global map; often compared to Angels\' Share.'),
+  trend(alternative('lattafa-khamrah-qahwa', 'Khamrah Qahwa', brands.lattafa, 'gourmand', 'unisex'),
+    'Cinnamon:spicy, Cardamom:spicy, Ginger:spicy / Praline:gourmand, Candied Fruits:gourmand, White Flowers:floral / Vanilla:gourmand, Coffee:gourmand, Tonka Bean:gourmand',
+    'Khamrah with Arabic coffee and cardamom. A Fragrantica Readers\' Choice winner.'),
+  trend(alternative('lattafa-yara', 'Yara', brands.lattafa, 'gourmand', 'feminine'),
+    'Orchid:floral, Heliotrope:floral, Tangerine:citrus / Gourmand Accord:gourmand, Tropical Fruits:fresh / Vanilla:gourmand, Musk:animalic, Sandalwood:woody',
+    'Pink, powdery and creamy. Lattafa\'s best seller on Amazon.'),
+  trend(alternative('afnan-9am-dive', '9am Dive', brands.afnan, 'aromatic', 'unisex'),
+    'Lemon:citrus, Mint:fresh, Blackcurrant:fresh / Apple:fresh, Cedar:woody, Incense:oriental / Ginger:spicy, Sandalwood:woody, Patchouli:woody',
+    'A crisp, minty blue scent and the daytime sibling to 9PM.'),
+  trend(original('miu-miu-miutine', 'Miutine', brands.miuMiu, 'floral', 'feminine'),
+    'Strawberry:fresh, Citruses:citrus / Rose:floral, Gardenia:floral, Jasmine:floral / Brown Sugar:gourmand, Patchouli:woody, Bourbon Vanilla:gourmand',
+    'Strawberry over a floral chypre, with brown sugar and patchouli.'),
+  trend(original('viktor-rolf-bonbon-berry-jelly', 'Bonbon Berry Jelly', brands.viktorRolf, 'gourmand', 'feminine'),
+    'Raspberry:fresh, Jelly:gourmand / Blackcurrant:fresh / Peony:floral',
+    'A raspberry-jelly layering scent from the 2026 Bonbon trio.'),
+  trend(original('estee-lauder-glimmer', 'Glimmer', brands.esteeLauder, 'gourmand', 'unisex'),
+    'Raspberry:fresh, Orange Blossom:floral, Milk Mousse:gourmand / Rose:floral, Vanilla:gourmand, Macarons:gourmand / Amber:oriental, Tonka Bean:gourmand, Sandalwood:woody',
+    'Estée Lauder\'s first gourmand: raspberry macaron, milk mousse and amber. Launched 2026.'),
+  trend(original('le-labo-violette-30', 'Violette 30', brands.leLabo, 'floral', 'unisex'),
+    'Violet:floral, Aldehydes:fresh, White Tea:fresh / Incense:oriental, Cumin:spicy, Saffron:spicy / Cedar:woody, Guaiac Wood:woody, Amber:oriental',
+    'A white violet wrapped in incense and woods, from Le Labo\'s 2026 Classic Collection.'),
+  trend(original('prada-paradoxe-sweet-chemistry', 'Paradoxe Sweet Chemistry', brands.prada, 'floral', 'feminine'),
+    'Blackcurrant:fresh, Orange Blossom:floral / Neroli:floral, Vanilla:gourmand / Neroli Milk Accord:gourmand',
+    'Blackcurrant and milky neroli. The sweetest Paradoxe yet, launched 2026.'),
+  trend(original('amouage-elsewhere', 'Elsewhere', brands.amouage, 'woody', 'unisex'),
+    'Honey:gourmand, Tangerine:citrus, Pomegranate:fresh / Black Tea:fresh, Cappuccino:gourmand, Davana:floral / Tonka Bean:gourmand, Vanilla:gourmand, Labdanum:oriental',
+    'Honey, black tea and cappuccino at 30% concentration. Amouage\'s 2026 global release.',
+    { concentration: 'Extrait' }),
+  trend(original('chanel-coco-mademoiselle-crush-absolu', 'Coco Mademoiselle Crush Absolu', brands.chanel, 'floral', 'feminine'),
+    'Lychee:fresh, Grapefruit:citrus / Rose:floral, Jasmine:floral / Patchouli:woody, Vanilla:gourmand, Vetiver:woody',
+    'A warmer, juicier Coco Mademoiselle with lychee and vanilla. Launched August 2026.'),
+  trend(original('nina-ricci-nina-eau-de-parfum', 'Nina Eau de Parfum', brands.ninaRicci, 'gourmand', 'feminine'),
+    'Pear:fresh, Bergamot:citrus / Pistachio:gourmand, Gardenia:floral / Vanilla:gourmand, Sandalwood:woody',
+    'Pistachio and gardenia, made for Nina\'s 20th anniversary in 2026.')
 ]
 
 export const expandedDupeRelations = [
@@ -626,5 +719,13 @@ export const expandedDupeRelations = [
   { _id: 'dupe-by-the-fireplace-ameer-al-oudh', originalId: 'maison-margiela-by-the-fireplace', dupeId: 'lattafa-ameer-al-oudh-intense-oud', similarityScore: 80, priceComparison: { savings: 84 } },
   { _id: 'dupe-bleu-de-chanel-blue-iconic', originalId: 'chanel-bleu-de-chanel', dupeId: 'armaf-club-de-nuit-blue-iconic', similarityScore: 82, priceComparison: { savings: 84 } },
   { _id: 'dupe-invictus-hawas', originalId: 'paco-rabanne-invictus', dupeId: 'rasasi-hawas', similarityScore: 82, priceComparison: { savings: 78 } },
-  { _id: 'dupe-one-million-cdn-man', originalId: 'paco-rabanne-one-million', dupeId: 'armaf-club-de-nuit-man', similarityScore: 80, priceComparison: { savings: 84 } }
+  { _id: 'dupe-one-million-cdn-man', originalId: 'paco-rabanne-one-million', dupeId: 'armaf-club-de-nuit-man', similarityScore: 80, priceComparison: { savings: 84 } },
+
+  // Trending 2026 pairs — each backed by 2+ independent sources; scores kept conservative
+  { _id: 'dupe-althair-liquid-brun', originalId: 'parfums-de-marly-althair', dupeId: 'french-avenue-liquid-brun', similarityScore: 86, priceComparison: { savings: 85 } },
+  { _id: 'dupe-bianco-latte-eclaire', originalId: 'giardini-di-toscana-bianco-latte', dupeId: 'lattafa-eclaire', similarityScore: 84, priceComparison: { savings: 82 } },
+  { _id: 'dupe-scandal-pour-homme-mandarin-sky', originalId: 'jpg-scandal-pour-homme', dupeId: 'armaf-odyssey-mandarin-sky', similarityScore: 82, priceComparison: { savings: 68 } },
+  { _id: 'dupe-le-male-elixir-the-kingdom', originalId: 'jpg-le-male-elixir', dupeId: 'lattafa-the-kingdom', similarityScore: 80, priceComparison: { savings: 70 } },
+  { _id: 'dupe-burberry-goddess-angham', originalId: 'burberry-goddess', dupeId: 'lattafa-angham', similarityScore: 78, priceComparison: { savings: 75 } },
+  { _id: 'dupe-angels-share-khamrah', originalId: 'kilian-angels-share', dupeId: 'lattafa-khamrah', similarityScore: 75, priceComparison: { savings: 85 } }
 ]
