@@ -19,6 +19,8 @@ import { gsap, useGSAP, useReveal, MOTION_OK, EASE } from '../lib/motion'
 
 const middleEasternTypes = ['arabian', 'clone']
 const getId = (item) => String(item?._id || item?.id || '')
+// Review URLs can come from the API; only link out to http(s), never javascript: or data:.
+const isWebUrl = (url) => typeof url === 'string' && /^https?:\/\//i.test(url)
 
 const sourceIcons = {
   fragrantica: StarIcon,
@@ -258,7 +260,7 @@ function PerfumeDetail() {
                         )}
                       </div>
                       <blockquote className="text-ivory-300 leading-relaxed">&ldquo;{review.text}&rdquo;</blockquote>
-                      {review.url && (
+                      {isWebUrl(review.url) && (
                         <a href={review.url} target="_blank" rel="noopener noreferrer" className="inline-block text-xs text-gold-400 hover:text-gold-300 mt-3 break-all">
                           View source
                         </a>
