@@ -1,14 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { WarningIcon, MagnifyingGlassIcon } from '@phosphor-icons/react'
 import PerfumeCard from '../components/perfume/PerfumeCard'
 import FilterPanel from '../components/search/FilterPanel'
 import api from '../services/api'
+import { useReveal } from '../lib/motion'
+
+const sorters = {
+  featured: null,
+  trending: (a, b) => Number(!!b.trending) - Number(!!a.trending),
+  name: (a, b) => a.name.localeCompare(b.name),
+}
 
 function Browse() {
+  const rootRef = useRef(null)
   const [searchParams, setSearchParams] = useSearchParams()
   const [perfumes, setPerfumes] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [sort, setSort] = useState('featured')
   const [filters, setFilters] = useState({
     category: searchParams.get('category') || '',
     brand: searchParams.get('brand') || '',
@@ -19,6 +29,8 @@ function Browse() {
   useEffect(() => {
     fetchPerfumes()
   }, [filters])
+
+  useReveal(rootRef, [perfumes, sort])
 
   const fetchPerfumes = async () => {
     setLoading(true)
@@ -43,77 +55,74 @@ function Browse() {
     setSearchParams(params)
   }
 
+  const sorted = sorters[sort] ? [...perfumes].sort(sorters[sort]) : perfumes
+
   return (
-    <div className="min-h-screen pt-24 pb-16 px-6 lg:px-8 bg-cream-100 page-transition">
+    <div ref={rootRef} className="min-h-screen pt-32 pb-24 px-6 lg:px-8 page-transition bg-[radial-gradient(ellipse_at_top,rgb(201_163_106/0.12),transparent_50%)]">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-10">
-          <h1 className="text-4xl md:text-5xl font-display font-semibold text-dark-800 mb-3">
-            Our <span className="italic text-accent-500">Collection</span>
+        <div className="reveal mb-12">
+          <h1 className="font-display text-5xl md:text-7xl text-ivory-50 tracking-tight mb-4">
+            Our <em className="text-gold-300">collection</em>
           </h1>
-          <p className="text-dark-500 text-lg">
-            Explore our curated selection of Middle Eastern fragrances
+          <p className="text-ivory-400 text-lg max-w-xl">
+            Designer originals and the Middle Eastern fragrances that answer them.
           </p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters Sidebar */}
           <aside className="lg:w-72 shrink-0">
             <FilterPanel filters={filters} onFilterChange={handleFilterChange} />
           </aside>
 
-          {/* Perfume Grid */}
           <main className="grow">
             {loading ? (
-              <div className="flex flex-col justify-center items-center py-20">
-                <div className="w-12 h-12 border-2 border-accent-500 border-t-transparent rounded-full animate-spin"></div>
-                <p className="mt-4 text-dark-500">Loading fragrances...</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6" aria-busy="true" aria-label="Loading fragrances">
+                {Array.from({ length: 6 }, (_, i) => (
+                  <div key={i} className="card-flat motion-safe:animate-pulse">
+                    <div className="aspect-4/5 bg-noir-700" />
+                    <div className="p-5 space-y-3">
+                      <div className="h-3 w-1/3 rounded-full bg-noir-700" />
+                      <div className="h-5 w-2/3 rounded-full bg-noir-700" />
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : error ? (
-              <div className="text-center py-20 bg-white rounded-2xl shadow-sm border border-red-100">
-                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-red-50 flex items-center justify-center">
-                  <span className="text-4xl">⚠️</span>
-                </div>
-                <h3 className="text-xl font-display font-semibold text-dark-800 mb-2">
-                  Collection unavailable
-                </h3>
-                <p className="text-dark-500 max-w-md mx-auto">
-                  {error}
-                </p>
+              <div className="card-flat text-center py-20 px-6">
+                <WarningIcon size={48} weight="duotone" className="mx-auto mb-6 text-accent-400" aria-hidden="true" />
+                <h3 className="text-2xl font-display text-ivory-50 mb-2">Collection unavailable</h3>
+                <p className="text-ivory-400 max-w-md mx-auto">{error}</p>
               </div>
             ) : perfumes.length > 0 ? (
               <>
                 <div className="flex items-center justify-between mb-6">
-                  <p className="text-sm text-dark-500">
-                    Showing <span className="font-semibold text-dark-800">{perfumes.length}</span> fragrance{perfumes.length !== 1 ? 's' : ''}
+                  <p className="text-sm text-ivory-400">
+                    Showing <span className="text-ivory-50">{perfumes.length}</span> fragrance{perfumes.length !== 1 ? 's' : ''}
                   </p>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-dark-500">Sort by:</span>
-                    <select className="text-sm bg-white border border-dark-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-500/20 focus:border-accent-500">
-                      <option>Featured</option>
-                      <option>Best Match</option>
-                      <option>Most Popular</option>
-                      <option>Newest</option>
+                  <label className="flex items-center gap-2 text-sm text-ivory-400">
+                    Sort by
+                    <select
+                      value={sort}
+                      onChange={(e) => setSort(e.target.value)}
+                      className="bg-noir-800 border border-noir-600 text-ivory-100 rounded-lg px-3 py-2 focus:outline-none focus:border-gold-500"
+                    >
+                      <option value="featured">Featured</option>
+                      <option value="trending">Trending 2026</option>
+                      <option value="name">Name A-Z</option>
                     </select>
-                  </div>
+                  </label>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {perfumes.map((perfume) => (
-                    <PerfumeCard key={perfume._id} perfume={perfume} />
+                  {sorted.map((perfume) => (
+                    <PerfumeCard key={perfume._id} perfume={perfume} className="reveal" />
                   ))}
                 </div>
               </>
             ) : (
-              <div className="text-center py-20 bg-white rounded-2xl shadow-sm">
-                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-cream-200 flex items-center justify-center">
-                  <span className="text-4xl">🔍</span>
-                </div>
-                <h3 className="text-xl font-display font-semibold text-dark-800 mb-2">
-                  No perfumes found
-                </h3>
-                <p className="text-dark-500 max-w-md mx-auto">
-                  Try adjusting your filters to discover more fragrances.
-                </p>
+              <div className="card-flat text-center py-20 px-6">
+                <MagnifyingGlassIcon size={48} weight="duotone" className="mx-auto mb-6 text-gold-400" aria-hidden="true" />
+                <h3 className="text-2xl font-display text-ivory-50 mb-2">No perfumes found</h3>
+                <p className="text-ivory-400 max-w-md mx-auto">Try adjusting your filters to discover more fragrances.</p>
               </div>
             )}
           </main>

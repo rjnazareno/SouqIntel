@@ -1,23 +1,22 @@
 function NoteTag({ note }) {
   return (
-    <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-cream-100 text-dark-700 border border-cream-200 hover:bg-accent-100 hover:text-accent-700 hover:border-accent-200 transition-colors cursor-default">
+    <span className="inline-flex items-center px-4 py-2 rounded-full text-sm border border-noir-600 bg-noir-800 text-ivory-100 hover:border-gold-500/60 hover:text-gold-300 transition-colors cursor-default">
       {note.name || note}
     </span>
   )
 }
 
-function NoteSection({ title, subtitle, notesArray, gradient }) {
+function NoteSection({ title, subtitle, notesArray, width }) {
   return (
-    <div className="relative mb-8 last:mb-0">
-      <div className={`absolute inset-0 ${gradient} opacity-30 rounded-3xl`}></div>
-      <div className="relative text-center py-6 px-4">
-        <p className="text-xs uppercase tracking-widest text-dark-400 mb-1 font-semibold">{title}</p>
-        <p className="text-xs text-dark-300 mb-4">{subtitle}</p>
+    <div className={`reveal relative mx-auto mb-4 last:mb-0 rounded-3xl border border-noir-600/70 bg-linear-to-b from-gold-500/7 to-transparent ${width}`}>
+      <div className="text-center py-6 px-4">
+        <p className="eyebrow mb-1">{title}</p>
+        <p className="text-xs text-ivory-500 mb-4">{subtitle}</p>
         <div className="flex flex-wrap justify-center gap-2">
           {notesArray.length > 0 ? (
             notesArray.map((note, idx) => <NoteTag key={idx} note={note} />)
           ) : (
-            <span className="text-dark-400 text-sm italic">No {title.toLowerCase()} listed</span>
+            <span className="text-ivory-500 text-sm italic">No {title.toLowerCase()} listed</span>
           )}
         </div>
       </div>
@@ -25,6 +24,7 @@ function NoteSection({ title, subtitle, notesArray, gradient }) {
   )
 }
 
+// Widening tiers read as a pyramid: top notes narrowest, base widest.
 function NotesPyramid({ notes }) {
   if (!notes) return null
 
@@ -32,24 +32,9 @@ function NotesPyramid({ notes }) {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <NoteSection 
-        title="Top Notes" 
-        subtitle="First impression • 15-30 min" 
-        notesArray={top}
-        gradient="bg-gradient-to-b from-accent-100 to-transparent"
-      />
-      <NoteSection 
-        title="Heart Notes" 
-        subtitle="The heart • 30 min - 4 hrs" 
-        notesArray={middle}
-        gradient="bg-gradient-to-b from-cream-200 to-transparent"
-      />
-      <NoteSection 
-        title="Base Notes" 
-        subtitle="The foundation • 4+ hrs" 
-        notesArray={base}
-        gradient="bg-gradient-to-t from-cream-200 to-transparent"
-      />
+      <NoteSection title="Top Notes" subtitle="First impression, 15-30 min" notesArray={top} width="max-w-md" />
+      <NoteSection title="Heart Notes" subtitle="The heart, 30 min to 4 hrs" notesArray={middle} width="max-w-lg" />
+      <NoteSection title="Base Notes" subtitle="The foundation, 4+ hrs" notesArray={base} width="max-w-2xl" />
     </div>
   )
 }

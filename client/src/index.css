@@ -1,65 +1,66 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
-
 @import "tailwindcss";
 
 @theme {
-  /* Warm cream/orange palette - Inspired by SCENTORA */
-  --color-cream-50: #FFFDF9;
-  --color-cream-100: #FDF6EC;
-  --color-cream-200: #FAF0E4;
-  --color-cream-300: #F5E6D3;
-  --color-cream-400: #EED9C4;
-  --color-cream-500: #E5C9AE;
+  /* Oud Noir — see docs/design-system.md */
+  --color-noir-950: #0B0907;
+  --color-noir-900: #0E0B09;
+  --color-noir-800: #1A1512;
+  --color-noir-700: #251E19;
+  --color-noir-600: #3A2F27;
 
-  /* Primary orange accent */
-  --color-accent-50: #FFF4ED;
+  --color-ivory-50: #FBF6EE;
+  --color-ivory-100: #F3EADB;
+  --color-ivory-300: #CDBFAA;
+  --color-ivory-400: #A89B8A;
+  --color-ivory-500: #7D7062;
+
+  --color-gold-300: #E3C893;
+  --color-gold-400: #D4B47E;
+  --color-gold-500: #C9A36A;
+  --color-gold-600: #A9844E;
+
+  /* Ember — savings and alerts only */
   --color-accent-100: #FFE6D5;
-  --color-accent-200: #FECBAA;
-  --color-accent-300: #FDA676;
   --color-accent-400: #FB8A4B;
   --color-accent-500: #E86835;
   --color-accent-600: #D45A2B;
-  --color-accent-700: #B04424;
-  --color-accent-800: #8C3720;
-  --color-accent-900: #72301D;
 
-  /* Neutral dark tones */
-  --color-dark-50: #F7F7F7;
-  --color-dark-100: #E3E3E3;
-  --color-dark-200: #C8C8C8;
-  --color-dark-300: #A8A8A8;
-  --color-dark-400: #888888;
-  --color-dark-500: #6B6B6B;
-  --color-dark-600: #4A4A4A;
-  --color-dark-700: #333333;
-  --color-dark-800: #1A1A1A;
-  --color-dark-900: #0D0D0D;
-
-  /* Keep legacy colors for compatibility */
-  --color-gold-500: #E86835;
-  --color-gold-600: #D45A2B;
-
-  /* Font families for Tailwind v4 */
-  --font-display: 'Playfair Display', serif;
-  --font-arabic: 'Noto Sans Arabic', sans-serif;
+  --font-sans: 'Jost Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Cormorant Garamond Variable', ui-serif, Georgia, serif;
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
   }
 
   body {
-    @apply font-sans text-dark-800 bg-cream-100 m-0 antialiased;
+    @apply font-sans text-ivory-100 bg-noir-950 m-0 antialiased;
   }
 
   #root {
     @apply min-h-screen;
   }
 
-  /* Smooth page transitions */
+  ::selection {
+    @apply bg-gold-500 text-noir-950;
+  }
+
+  input, textarea {
+    caret-color: var(--color-gold-400);
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-gold-400;
+  }
+
   .page-transition {
-    animation: fadeIn 0.4s ease-out;
+    animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   @keyframes fadeIn {
@@ -69,152 +70,138 @@
 }
 
 @layer components {
-  /* Primary CTA button - pill shaped with arrow */
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-accent-500 text-white font-medium rounded-full 
-           hover:bg-accent-600 active:bg-accent-700 transition-all duration-300 
-           shadow-lg shadow-accent-500/20 hover:shadow-xl hover:shadow-accent-500/30
-           hover:-translate-y-0.5;
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-noir-950
+           bg-linear-to-b from-gold-300 to-gold-500 transition-all duration-300
+           shadow-[0_10px_30px_-10px_rgb(201_163_106/0.6)] hover:shadow-[0_14px_40px_-8px_rgb(201_163_106/0.75)]
+           hover:-translate-y-0.5 active:translate-y-0;
   }
 
   .btn-primary-outline {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-transparent text-dark-800 font-medium rounded-full 
-           border-2 border-dark-800 hover:bg-dark-800 hover:text-white transition-all duration-300;
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-ivory-100
+           border border-ivory-100/30 hover:border-gold-400 hover:text-gold-300 transition-all duration-300;
   }
 
-  /* Secondary button */
   .btn-secondary {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-white text-dark-700 font-medium rounded-full 
-           border border-dark-200 hover:border-accent-500 hover:text-accent-600 
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-ivory-100
+           bg-noir-800 border border-noir-600 hover:border-gold-500 hover:text-gold-300
            transition-all duration-300 hover:-translate-y-0.5;
   }
 
-  /* Ghost button */
   .btn-ghost {
-    @apply inline-flex items-center gap-2 px-4 py-2 text-dark-600 font-medium 
-           hover:text-accent-500 transition-colors duration-200;
+    @apply inline-flex items-center gap-2 px-4 py-2 font-medium text-ivory-300
+           hover:text-gold-300 transition-colors duration-200;
   }
 
-  /* Circle icon button */
   .btn-icon {
-    @apply w-12 h-12 rounded-full flex items-center justify-center
-           bg-dark-800 text-white hover:bg-dark-700 transition-all duration-200;
+    @apply w-12 h-12 rounded-full flex items-center justify-center text-ivory-100
+           bg-noir-800 border border-noir-600 hover:border-gold-500 hover:text-gold-300 transition-all duration-200;
   }
 
-  /* Modern card */
   .card {
-    @apply bg-white rounded-2xl shadow-sm border border-dark-100/50
-           hover:shadow-lg hover:shadow-dark-200/50 hover:-translate-y-1
-           transition-all duration-300 overflow-hidden;
+    @apply bg-noir-800 rounded-2xl border border-noir-600/70 overflow-hidden
+           transition-all duration-500 hover:-translate-y-1 hover:border-gold-500/50
+           hover:shadow-[0_20px_60px_-20px_rgb(201_163_106/0.35)];
   }
 
   .card-flat {
-    @apply bg-white rounded-2xl border border-dark-100/50 overflow-hidden;
+    @apply bg-noir-800 rounded-2xl border border-noir-600/70 overflow-hidden;
   }
 
-  /* Input fields */
   .input-field {
-    @apply w-full px-5 py-3.5 bg-white border border-dark-200 rounded-full 
-           focus:ring-2 focus:ring-accent-500/20 focus:border-accent-500 
-           outline-none transition-all duration-200 text-dark-800 
-           placeholder:text-dark-400;
+    @apply w-full px-5 py-3.5 rounded-full outline-none transition-all duration-200
+           bg-noir-800 border border-noir-600 text-ivory-100 placeholder:text-ivory-500
+           focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20;
   }
 
   .input-field-box {
-    @apply w-full px-4 py-3 bg-white border border-dark-200 rounded-xl 
-           focus:ring-2 focus:ring-accent-500/20 focus:border-accent-500 
-           outline-none transition-all duration-200;
+    @apply w-full px-4 py-3 rounded-xl outline-none transition-all duration-200
+           bg-noir-800 border border-noir-600 text-ivory-100
+           focus:border-gold-500 focus:ring-2 focus:ring-gold-500/20;
   }
 
-  /* Badges */
   .badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium;
   }
 
-  .badge-accent {
-    @apply bg-accent-100 text-accent-700;
+  .badge-accent,
+  .badge-gold {
+    @apply bg-gold-500/15 text-gold-300 border border-gold-500/25;
   }
 
   .badge-dark {
-    @apply bg-dark-800 text-white;
+    @apply bg-noir-950/80 text-ivory-100 border border-ivory-100/10;
   }
 
   .badge-light {
-    @apply bg-dark-100 text-dark-600;
+    @apply bg-ivory-100/8 text-ivory-300 border border-ivory-100/10;
   }
 
-  .badge-success {
-    @apply bg-green-100 text-green-700;
+  .badge-success,
+  .badge-green {
+    @apply bg-emerald-400/15 text-emerald-300 border border-emerald-400/25;
   }
 
-  /* Section title styling */
   .section-title {
-    @apply font-display text-3xl md:text-4xl font-semibold text-dark-800 tracking-tight;
+    @apply font-display text-4xl md:text-6xl font-medium leading-[1.08] pb-1 text-ivory-50 tracking-[-0.01em] text-balance;
   }
 
   .section-subtitle {
-    @apply text-dark-500 text-lg;
+    @apply text-ivory-400 text-lg;
   }
 
-  /* Legacy support */
-  .badge-gold {
-    @apply bg-accent-100 text-accent-700;
+  .eyebrow {
+    @apply text-xs uppercase tracking-[0.3em] text-gold-400 font-medium;
   }
 
-  .badge-green {
-    @apply bg-green-100 text-green-700;
+  /* Liquid glass — CSS only, solid when transparency/contrast prefs ask */
+  .glass {
+    background: rgb(243 234 219 / 0.06);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid rgb(243 234 219 / 0.14);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 10px 40px -12px rgb(0 0 0 / 0.6);
+  }
+
+  @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+    .glass {
+      background: var(--color-noir-800);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
   }
 }
 
-/* Marquee animation for scrolling banner */
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+/* The brand arch as a window: content inside is clipped to the arch opening */
+.arch-window {
+  -webkit-mask: url('/brand/arch-window.svg') center / 100% 100% no-repeat;
+  mask: url('/brand/arch-window.svg') center / 100% 100% no-repeat;
 }
 
-.animate-marquee {
-  animation: marquee 30s linear infinite;
+/* GSAP drives transform on magnetic elements; keep CSS transitions off that property */
+.magnetic {
+  transition-property: color, background-color, border-color, box-shadow, opacity;
 }
 
-.animate-marquee:hover {
-  animation-play-state: paused;
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
 
-/* Smooth hover transitions for images */
-.img-hover-zoom {
-  overflow: hidden;
+/* Film grain over the whole page — static, decorative */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.img-hover-zoom img {
-  transition: transform 0.5s ease;
-}
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
-.img-hover-zoom:hover img {
-  transform: scale(1.05);
-}
-
-/* Glass morphism effect */
-.glass {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-cream-200);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-dark-300);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-dark-400);
-}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--color-noir-950); }
+::-webkit-scrollbar-thumb { background: var(--color-noir-600); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-gold-600); }
