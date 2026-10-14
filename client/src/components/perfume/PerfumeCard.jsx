@@ -1,87 +1,69 @@
 import { Link } from 'react-router-dom'
+import { ClockIcon, WindIcon, DropIcon } from '@phosphor-icons/react'
 
-function PerfumeCard({ perfume, similarity, savings, relationshipLabel, relationshipTone = 'alternative' }) {
+function PerfumeCard({ perfume, similarity, savings, relationshipLabel, relationshipTone = 'alternative', className = '' }) {
   if (!perfume) return null
 
   const relationshipClasses = relationshipTone === 'original'
-    ? 'bg-dark-800 text-white'
-    : 'bg-accent-500 text-white'
+    ? 'badge-dark'
+    : 'bg-gold-400 text-noir-950'
 
   return (
-    <Link to={`/perfume/${perfume._id}`} className="card group block">
-      {/* Image */}
-      <div className="aspect-square bg-gradient-to-br from-cream-100 to-cream-200 relative overflow-hidden">
+    <Link to={`/perfume/${perfume._id}`} className={`card group block ${className}`}>
+      {/* Image on an ivory plinth; multiply melts white product shots into it */}
+      <div className="aspect-4/5 relative overflow-hidden isolate bg-[radial-gradient(circle_at_50%_38%,var(--color-ivory-50),var(--color-ivory-300))]">
         {perfume.imageUrl ? (
           <img
             src={perfume.imageUrl}
             alt={perfume.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+            className="w-full h-full object-cover mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-105"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="text-7xl group-hover:scale-110 transition-transform duration-300">🌸</span>
+          <div className="w-full h-full flex items-center justify-center text-gold-600">
+            <DropIcon size={64} weight="duotone" aria-hidden="true" />
           </div>
         )}
 
-        {/* Badges */}
-        <div className="absolute top-4 left-4 flex flex-col gap-2">
-          {relationshipLabel && (
-            <span className={`badge shadow-lg ${relationshipClasses}`}>
-              {relationshipLabel}
-            </span>
-          )}
-          {similarity && (
-            <span className="badge bg-dark-800 text-white shadow-lg">
-              {similarity}% match
-            </span>
-          )}
-          {savings && (
-            <span className="badge bg-accent-500 text-white shadow-lg">
-              Save {savings}%
-            </span>
-          )}
+        <div className="absolute top-3 left-3 flex flex-col items-start gap-2">
+          {relationshipLabel && <span className={`badge shadow-lg ${relationshipClasses}`}>{relationshipLabel}</span>}
+          {similarity && <span className="badge badge-dark shadow-lg">{similarity}% match</span>}
+          {savings && <span className="badge bg-accent-500 text-noir-950 shadow-lg">Save {savings}%</span>}
         </div>
 
-        {/* Quick view overlay */}
-        <div className="absolute inset-0 bg-dark-800/0 group-hover:bg-dark-800/10 transition-colors duration-300" />
+        {perfume.trending && (
+          <span className="absolute top-3 right-3 badge bg-noir-950 text-gold-300 tracking-widest">2026</span>
+        )}
       </div>
 
-      {/* Content */}
       <div className="p-5">
-        <p className="text-sm text-accent-500 font-medium truncate mb-1">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-gold-400 truncate mb-1.5">
           {perfume.brand?.name || 'Unknown Brand'}
         </p>
-        <h3 className="font-display text-lg font-semibold text-dark-800 truncate group-hover:text-accent-600 transition-colors">
+        <h3 className="font-display text-xl text-ivory-50 truncate group-hover:text-gold-300 transition-colors">
           {perfume.name}
         </h3>
-        
-        {/* Tags */}
+
         <div className="mt-3 flex items-center gap-2 flex-wrap">
-          <span className="badge badge-accent text-xs capitalize">{perfume.type}</span>
-          <span className="badge badge-light text-xs capitalize">{perfume.category}</span>
+          <span className="badge badge-accent capitalize">{perfume.type}</span>
+          <span className="badge badge-light capitalize">{perfume.category}</span>
         </div>
 
-        {/* Performance + Range Row */}
-        <div className="mt-4 pt-4 border-t border-dark-100 flex items-center justify-between">
-          <div className="flex items-center gap-4 text-xs text-dark-400">
-            <div className="flex items-center gap-1.5">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>{perfume.longevity}/10</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              <span>{perfume.sillage}/10</span>
-            </div>
-          </div>
-          
-          {perfume.priceRange && (
-            <span className="text-sm font-semibold text-dark-700 capitalize">
-              {perfume.priceRange}
+        <div className="mt-4 pt-4 border-t border-noir-600/70 flex items-center justify-between">
+          <div className="flex items-center gap-4 text-xs text-ivory-400">
+            <span className="flex items-center gap-1.5" title="Longevity">
+              <ClockIcon size={16} aria-hidden="true" />
+              <span className="sr-only">Longevity</span>
+              {perfume.longevity}/10
             </span>
+            <span className="flex items-center gap-1.5" title="Sillage">
+              <WindIcon size={16} aria-hidden="true" />
+              <span className="sr-only">Sillage</span>
+              {perfume.sillage}/10
+            </span>
+          </div>
+          {perfume.priceRange && (
+            <span className="text-sm font-medium text-ivory-300 capitalize">{perfume.priceRange}</span>
           )}
         </div>
       </div>

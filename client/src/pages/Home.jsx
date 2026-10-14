@@ -1,411 +1,542 @@
-import { useState, useEffect } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ArrowRightIcon, ArrowUpRightIcon, CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react'
 import SearchBar from '../components/search/SearchBar'
+import PerfumeCard from '../components/perfume/PerfumeCard'
+import { fallbackPerfumes, fallbackDupeRelations } from '../data/fallbackPerfumes'
+import { gsap, ScrollTrigger, SplitText, useGSAP, useReveal, MOTION_OK, EASE } from '../lib/motion'
 
-function Home() {
-  // Hero image carousel - using background-removed images
-  const heroImages = [
-    { src: '/images/perfumes/nobg/baccarat-rouge-540.png', name: 'Baccarat Rouge 540' },
-    { src: '/images/perfumes/nobg/oud-wood.png', name: 'Oud Wood' },
-    { src: '/images/perfumes/nobg/aventus.png', name: 'Aventus' },
-    { src: '/images/perfumes/nobg/layton.png', name: 'Layton' },
-    { src: '/images/perfumes/nobg/sauvage.png', name: 'Sauvage' },
-    { src: '/images/perfumes/nobg/tobacco-vanille.png', name: 'Tobacco Vanille' },
-    { src: '/images/perfumes/nobg/black-orchid.png', name: 'Black Orchid' },
-    { src: '/images/perfumes/nobg/grand-soir.png', name: 'Grand Soir' },
-  ]
+const HeroSmoke = lazy(() => import('../components/effects/HeroSmoke'))
+const LiquidArch = lazy(() => import('../components/effects/LiquidArch'))
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [isTransitioning, setIsTransitioning] = useState(false)
+// WebGL only where motion is welcome and the screen is wide enough to run it smoothly;
+// everyone else gets the CSS gradient and the static gold arch.
+const canRunFX = typeof window !== 'undefined'
+  && window.matchMedia(`${MOTION_OK} and (min-width: 768px)`).matches
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsTransitioning(true)
-      setTimeout(() => {
-        setCurrentImageIndex((prev) => (prev + 1) % heroImages.length)
-        setIsTransitioning(false)
-      }, 500)
-    }, 4000)
+const ARCH_FRAME = 'M0 560V252C0 128 88 46 200 0c112 46 200 128 200 252v308zM28 560V256c0-110 78-180 172-224 94 44 172 114 172 224v304z'
 
-    return () => clearInterval(interval)
-  }, [heroImages.length])
+const byId = new Map(fallbackPerfumes.map((p) => [p._id, p]))
+const noteNames = (p) => Object.values(p.notes || {}).flat().map((n) => n.name)
 
-  const featuredCategories = [
-    { name: 'Oud', icon: '🪵', description: 'Rich, woody fragrances', image: '/oud-category.jpg' },
-    { name: 'Musk', icon: '🦌', description: 'Sensual, warm scents', image: '/musk-category.jpg' },
-    { name: 'Amber', icon: '✨', description: 'Sweet, resinous notes', image: '/amber-category.jpg' },
-    { name: 'Floral', icon: '🌹', description: 'Elegant rose & jasmine', image: '/floral-category.jpg' },
-  ]
+// Every catalog pair where both sides are trending entries (real note pyramids and images),
+// best match first. New trending pairs added to the catalog show up here automatically.
+const pairs = fallbackDupeRelations
+  .filter((r) => byId.get(r.originalId)?.trending && byId.get(r.dupeId)?.trending)
+  .sort((a, b) => b.similarityScore - a.similarityScore)
+  .map((r) => {
+    const original = byId.get(r.originalId)
+    const dupe = byId.get(r.dupeId)
+    const inDupe = new Set(noteNames(dupe).map((n) => n.toLowerCase()))
+    const inOriginal = new Set(noteNames(original).map((n) => n.toLowerCase()))
+    return {
+      ...r,
+      original,
+      dupe,
+      shared: noteNames(original).filter((n) => inDupe.has(n.toLowerCase())),
+      originalOnly: noteNames(original).filter((n) => !inDupe.has(n.toLowerCase())),
+      dupeOnly: noteNames(dupe).filter((n) => !inOriginal.has(n.toLowerCase())),
+    }
+  })
 
-  const popularDupes = [
-    { original: 'Baccarat Rouge 540', dupe: 'Lattafa Raghba', savings: '90%', image: '/images/perfumes/baccarat-rouge-540.jpg' },
-    { original: 'Tom Ford Oud Wood', dupe: 'Armaf Club de Nuit', savings: '85%', image: '/images/perfumes/oud-wood.jpg' },
-    { original: 'Creed Aventus', dupe: 'Armaf CDNIM', savings: '95%', image: '/images/perfumes/aventus.jpg' },
-  ]
+const trending = fallbackPerfumes.filter((p) => p.trending)
 
-  const marqueeItems = [
-    'Expert Recommendations',
-    'Verified Dupe Matches',
-    'Community Reviews',
-    'Fragrance Comparisons',
-    'Middle Eastern Alternatives',
-    'Save Up to 95%',
-  ]
+// The most common notes across the catalog, for the marquee.
+const topNotes = [...fallbackPerfumes.flatMap(noteNames).reduce((m, n) => m.set(n, (m.get(n) || 0) + 1), new Map())]
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 12)
+  .map(([n]) => n)
 
-  const stats = [
-    { value: '50+', label: 'Fragrances' },
-    { value: '25k+', label: 'Active Users' },
-    { value: '100%', label: 'Authentic' },
-  ]
+const families = [
+  { id: 'oud', name: 'Oud', description: 'Smoky agarwood and resin', image: byId.get('oud-wood')?.imageUrl },
+  { id: 'gourmand', name: 'Gourmand', description: 'Vanilla, praline, pistachio', image: byId.get('lattafa-khamrah')?.imageUrl },
+  { id: 'amber', name: 'Amber', description: 'Warm, resinous, glowing', image: byId.get('jpg-le-male-elixir')?.imageUrl },
+  { id: 'floral', name: 'Floral', description: 'Rose, jasmine, violet', image: byId.get('miu-miu-miutine')?.imageUrl },
+].map((f) => ({ ...f, count: fallbackPerfumes.filter((p) => p.category === f.id).length }))
+
+// Rotates the arch through every pair. `gentle` is the reduced-motion version: opacity only.
+// Hovering or focusing the arch holds the current pair so it can be read (WCAG 2.2.2).
+function cyclePairs(gentle) {
+  const groups = gsap.utils.toArray('.arch-pair').map((g) => g.querySelectorAll('img'))
+  const captions = gsap.utils.toArray('.arch-caption')
+  const hold = gentle ? '+=6' : '+=4.5'
+  const loop = gsap.timeline({ repeat: -1, delay: gentle ? 6 : 4.5 })
+  groups.forEach((imgs, i) => {
+    const n = (i + 1) % groups.length
+    loop
+      .to(imgs, gentle
+        ? { opacity: 0, duration: 0.6 }
+        : { opacity: 0, y: -16, filter: 'blur(6px)', duration: 0.7, stagger: 0.08, ease: 'power2.in' }, i === 0 ? 0 : hold)
+      .to(captions[i], { autoAlpha: 0, y: gentle ? 0 : -8, duration: 0.4 }, '<')
+      .fromTo(groups[n], gentle
+        ? { opacity: 0 }
+        : { opacity: 0, y: 28, filter: 'blur(6px)' }, gentle
+        ? { opacity: 1, duration: 0.6 }
+        : { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.1, stagger: 0.3, ease: EASE }, gentle ? '>' : '-=0.15')
+      .fromTo(captions[n], { autoAlpha: 0, y: gentle ? 0 : 8 }, { autoAlpha: 1, y: 0, duration: 0.6 }, '<0.3')
+  })
+
+  const stage = document.querySelector('.hero-stage')
+  const pause = () => loop.pause()
+  const resume = () => loop.resume()
+  const events = [['pointerenter', pause], ['pointerleave', resume], ['focusin', pause], ['focusout', resume]]
+  events.forEach(([type, fn]) => stage?.addEventListener(type, fn))
+  return { loop, cleanup: () => events.forEach(([type, fn]) => stage?.removeEventListener(type, fn)) }
+}
+
+function StaticArch() {
+  return (
+    <svg viewBox="0 0 400 560" className="absolute inset-0 w-full h-full" aria-hidden="true">
+      <defs>
+        <linearGradient id="arch-gold" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#F1DDB0" />
+          <stop offset="0.45" stopColor="#B88E52" />
+          <stop offset="0.7" stopColor="#E3C893" />
+          <stop offset="1" stopColor="#8A6A3C" />
+        </linearGradient>
+      </defs>
+      <path fill="url(#arch-gold)" fillRule="evenodd" d={ARCH_FRAME} />
+    </svg>
+  )
+}
+
+function Bottle({ perfume, label }) {
+  return (
+    <Link to={`/perfume/${perfume._id}`} className="group block text-center">
+      <span className="share-img block mx-auto w-full max-w-[260px] aspect-3/4 rounded-t-full overflow-hidden isolate bg-[radial-gradient(ellipse_at_50%_40%,var(--color-ivory-50),var(--color-ivory-300))]">
+        <img src={perfume.imageUrl} alt={perfume.name} className="w-full h-full object-cover mix-blend-multiply scale-110 transition-transform duration-700 group-hover:scale-[1.15]" />
+      </span>
+      <span className="mt-5 block text-sm text-ivory-400">{label}, {perfume.brand?.name}</span>
+      <span className="block font-display text-3xl text-ivory-50 group-hover:text-gold-300 transition-colors">{perfume.name}</span>
+    </Link>
+  )
+}
+
+function PairExplorer() {
+  const [active, setActive] = useState(0)
+  const panelRef = useRef(null)
+  const pair = pairs[active]
+
+  useGSAP(() => {
+    gsap.matchMedia().add(MOTION_OK, () => {
+      gsap.from('.share-img', { opacity: 0, y: 24, duration: 0.8, stagger: 0.1, ease: EASE })
+      gsap.from('.note-chip', { opacity: 0, y: 10, duration: 0.45, stagger: 0.03, ease: EASE, delay: 0.15 })
+    })
+  }, { scope: panelRef, dependencies: [active], revertOnUpdate: true })
+
+  if (!pair) return null
 
   return (
-    <div className="page-transition">
-      {/* Hero Section */}
-      <section className="min-h-screen pt-20 pb-8 px-6 lg:px-8 bg-gradient-to-br from-cream-100 via-cream-200/50 to-accent-50/30 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[calc(100vh-120px)]">
-            {/* Left Content */}
-            <div className="order-2 lg:order-1 space-y-8">
-              <div className="space-y-6">
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-semibold text-dark-800 leading-[1.1] tracking-tight">
-                  Discover{' '}
-                  <span className="text-accent-500 italic">Middle Eastern</span>
-                  <br />
-                  Alternatives.
-                </h1>
-                <p className="text-lg text-dark-500 max-w-lg leading-relaxed">
-                  Experience the art of fine fragrance. Find affordable Middle Eastern 
-                  alternatives to expensive designer perfumes. Each scent tells a story.
-                </p>
-              </div>
+    <section className="px-6 lg:px-8 py-28 md:py-36">
+      <div className="max-w-7xl mx-auto">
+        <div className="reveal max-w-2xl">
+          <h2 className="section-title">Same accord, <em className="text-gold-300">a fraction</em> of the price.</h2>
+          <p className="section-subtitle mt-5">Pick a pair. The notes they share are lit in gold.</p>
+        </div>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-wrap items-center gap-4">
-                <Link to="/browse" className="btn-primary group">
-                  Explore Collection
-                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
+        <div role="tablist" aria-label="Dupe pairs" className="reveal mt-10 flex flex-wrap gap-2">
+          {pairs.map((p, i) => (
+            <button
+              key={p._id}
+              role="tab"
+              aria-selected={i === active}
+              aria-controls="pair-panel"
+              onClick={() => setActive(i)}
+              className={`px-4 py-2 rounded-full border text-sm transition-colors ${
+                i === active ? 'bg-gold-400 border-gold-400 text-noir-950' : 'border-noir-600 text-ivory-300 hover:border-gold-500 hover:text-ivory-50'
+              }`}
+            >
+              {p.original.name} / {p.dupe.name}
+            </button>
+          ))}
+        </div>
+
+        <div id="pair-panel" role="tabpanel" ref={panelRef} className="mt-14 grid grid-cols-1 md:grid-cols-[1fr_1.2fr_1fr] gap-12 md:gap-10 items-center">
+          <Bottle perfume={pair.original} label="Original" />
+
+          <div className="text-center">
+            <p className="font-display text-7xl md:text-8xl text-gold-300 leading-none tabular-nums">
+              {pair.shared.length}<span className="text-ivory-500">/{pair.shared.length + pair.originalOnly.length}</span>
+            </p>
+            <p className="mt-3 text-ivory-300">notes in common</p>
+            <ul className="mt-8 flex flex-wrap justify-center gap-2" aria-label="Notes">
+              {pair.shared.map((n) => (
+                <li key={`s-${n}`} className="note-chip px-3.5 py-1.5 rounded-full text-sm bg-gold-400 text-noir-950">{n}</li>
+              ))}
+              {pair.originalOnly.map((n) => (
+                <li key={`o-${n}`} className="note-chip px-3.5 py-1.5 rounded-full text-sm border border-noir-600 text-ivory-500 line-through decoration-ivory-500/60">
+                  {n}
+                </li>
+              ))}
+              {pair.dupeOnly.map((n) => (
+                <li key={`d-${n}`} className="note-chip px-3.5 py-1.5 rounded-full text-sm border border-ivory-100/25 text-ivory-300">+ {n}</li>
+              ))}
+            </ul>
+            <p className="mt-8 text-sm text-ivory-400">
+              {pair.similarityScore}% match, about {pair.priceComparison?.savings}% cheaper
+            </p>
+          </div>
+
+          <Bottle perfume={pair.dupe} label="Dupe" />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function FamilyIndex() {
+  const listRef = useRef(null)
+
+  useGSAP(() => {
+    gsap.matchMedia().add(`${MOTION_OK} and (pointer: fine)`, () => {
+      const preview = listRef.current.querySelector('.family-preview')
+      const imgs = preview.querySelectorAll('img')
+      const x = gsap.quickTo(preview, 'x', { duration: 0.6, ease: 'power3' })
+      const y = gsap.quickTo(preview, 'y', { duration: 0.6, ease: 'power3' })
+      const move = (e) => {
+        const r = listRef.current.getBoundingClientRect()
+        x(e.clientX - r.left - 110)
+        y(e.clientY - r.top - 150)
+      }
+      const enterRow = (e) => {
+        const i = Number(e.currentTarget.dataset.index)
+        gsap.to(preview, { autoAlpha: 1, scale: 1, duration: 0.4, ease: EASE })
+        imgs.forEach((img, j) => gsap.to(img, { opacity: i === j ? 1 : 0, duration: 0.3 }))
+      }
+      const leave = () => gsap.to(preview, { autoAlpha: 0, scale: 0.9, duration: 0.3 })
+      const rows = listRef.current.querySelectorAll('.family-row')
+      listRef.current.addEventListener('pointermove', move)
+      listRef.current.addEventListener('pointerleave', leave)
+      rows.forEach((row) => row.addEventListener('pointerenter', enterRow))
+      return () => {
+        listRef.current?.removeEventListener('pointermove', move)
+        listRef.current?.removeEventListener('pointerleave', leave)
+        rows.forEach((row) => row.removeEventListener('pointerenter', enterRow))
+      }
+    })
+  }, { scope: listRef })
+
+  return (
+    <section className="px-6 lg:px-8 py-28 md:py-36 border-t border-noir-600/60">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="reveal section-title mb-14">Explore by family</h2>
+        <div ref={listRef} className="relative">
+          <div
+            aria-hidden="true"
+            className="family-preview hidden md:block pointer-events-none absolute left-0 top-0 z-10 w-[220px] aspect-3/4 rounded-t-full overflow-hidden isolate invisible opacity-0 bg-[radial-gradient(ellipse_at_50%_40%,var(--color-ivory-50),var(--color-ivory-300))] shadow-[0_30px_60px_-20px_rgb(0_0_0/0.7)]"
+          >
+            {families.map((f) => (
+              <img key={f.id} src={f.image} alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply scale-110 opacity-0" />
+            ))}
+          </div>
+          <ul className="group/list border-b border-noir-600/60">
+            {families.map((f, i) => (
+              <li key={f.id} className="reveal border-t border-noir-600/60 transition-opacity duration-300 group-hover/list:opacity-40 hover:opacity-100!">
+                <Link
+                  to={`/browse?category=${f.id}`}
+                  data-index={i}
+                  className="family-row group grid grid-cols-[auto_minmax(0,1fr)_auto] md:grid-cols-[1fr_auto_auto] items-center gap-4 md:gap-10 py-6 md:py-8"
+                >
+                  <span className="md:hidden w-14 aspect-3/4 rounded-t-full overflow-hidden isolate bg-ivory-100">
+                    <img src={f.image} alt="" className="w-full h-full object-cover mix-blend-multiply" />
+                  </span>
+                  <span className="truncate font-display text-4xl sm:text-5xl md:text-8xl leading-none text-ivory-50 transition-[color,translate] duration-500 group-hover:text-gold-300 md:group-hover:translate-x-4">
+                    {f.name}
+                  </span>
+                  <span className="hidden md:block text-ivory-400 text-right">{f.description}</span>
+                  <span className="flex items-center gap-2 text-sm text-ivory-300 tabular-nums whitespace-nowrap">
+                    {f.count} scents
+                    <ArrowUpRightIcon size={18} className="text-gold-400 transition-transform duration-300 group-hover:rotate-45" aria-hidden="true" />
+                  </span>
                 </Link>
-                <Link to="/dupe-finder" className="btn-icon">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </Link>
-              </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  )
+}
 
-              {/* Popular Comparisons Preview */}
-              <div className="pt-6">
-                <p className="text-sm font-medium text-dark-500 mb-4">Popular Comparisons</p>
-                <div className="flex gap-4">
-                  {[
-                    { name: 'Baccarat Rouge', dupe: 'Has 12 dupes', image: '/images/perfumes/baccarat-rouge-540.jpg' },
-                    { name: 'Oud Wood', dupe: 'Has 8 dupes', image: '/images/perfumes/oud-wood.jpg' },
-                  ].map((product, i) => (
-                    <Link 
-                      key={i} 
-                      to="/dupe-finder" 
-                      className="flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-2xl p-3 pr-6 shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5"
-                    >
-                      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-cream-200 to-cream-300 flex items-center justify-center overflow-hidden">
-                        <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-dark-800 text-sm">{product.name}</p>
-                        <p className="text-accent-500 text-sm">{product.dupe}</p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
+function Home() {
+  const rootRef = useRef(null)
+  const heroRef = useRef(null)
+  const railRef = useRef(null)
+  const [heroInView, setHeroInView] = useState(true)
 
-            {/* Right - Hero Image Carousel */}
-            <div className="order-1 lg:order-2 relative">
-              <div className="relative aspect-square max-w-lg mx-auto lg:max-w-none">
-                {/* Background decorative circle */}
-                <div className="absolute inset-0 bg-gradient-to-br from-accent-100/50 to-cream-200/80 rounded-full scale-90" />
-                
-                {/* Image carousel */}
-                <div className="relative z-10 w-full h-full flex items-center justify-center p-8 pb-24">
-                  <div className="relative w-[380px] h-[480px]">
-                    {/* Main image with transition */}
-                    <div 
-                      className={`absolute inset-0 flex items-center justify-center transition-all duration-500 ${
-                        isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
-                      }`}
-                    >
-                      <img 
-                        src={heroImages[currentImageIndex].src}
-                        alt={heroImages[currentImageIndex].name}
-                        className="w-full h-full object-contain drop-shadow-2xl"
-                      />
-                    </div>
-                  </div>
-                </div>
+  useReveal(rootRef)
 
-                {/* Info tag - positioned below carousel */}
-                <div className="absolute bottom-12 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur-sm rounded-2xl px-6 py-3 shadow-lg z-20">
-                  <p className="text-sm text-dark-500">Find your</p>
-                  <p className="text-2xl font-display font-semibold italic text-accent-500">perfect match</p>
-                </div>
+  // Lets the liquid arch idle (speed 0) once the hero has scrolled away.
+  useEffect(() => {
+    const io = new IntersectionObserver(([entry]) => setHeroInView(entry.isIntersecting))
+    io.observe(heroRef.current)
+    return () => io.disconnect()
+  }, [])
 
-                {/* Image indicators */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-                  {heroImages.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => {
-                        setIsTransitioning(true)
-                        setTimeout(() => {
-                          setCurrentImageIndex(index)
-                          setIsTransitioning(false)
-                        }, 300)
-                      }}
-                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                        index === currentImageIndex 
-                          ? 'bg-accent-500 w-6' 
-                          : 'bg-dark-300 hover:bg-dark-400'
-                      }`}
-                      aria-label={`View ${heroImages[index].name}`}
-                    />
-                  ))}
-                </div>
+  useGSAP(() => {
+    const mm = gsap.matchMedia()
 
-                {/* Floating badges */}
-                <div className="absolute top-10 right-10 bg-white rounded-full px-4 py-2 shadow-lg z-20">
-                  <span className="text-sm font-medium text-dark-800">Verified Reviews</span>
-                </div>
-                <div className="absolute bottom-40 left-0 bg-accent-500 text-white rounded-full px-4 py-2 shadow-lg z-20">
-                  <span className="text-sm font-medium">50+ Fragrances</span>
-                </div>
+    mm.add(MOTION_OK, () => {
+      // Focal moment: the arch is lit, the original appears, then its dupe steps in beside it.
+      SplitText.create('.hero-title', {
+        type: 'lines',
+        mask: 'lines',
+        autoSplit: true,
+        onSplit: (self) => gsap.from(self.lines, { yPercent: 110, duration: 1.2, stagger: 0.12, ease: EASE }),
+      })
+      const firstPair = gsap.utils.toArray('.arch-pair')[0]?.querySelectorAll('img')
+      const intro = gsap.timeline({ defaults: { ease: EASE } })
+      intro
+        .from('.arch-glow', { opacity: 0, scale: 0.6, duration: 2 }, 0.1)
+        .from('.arch', { opacity: 0, scale: 0.94, duration: 1.4 }, 0.15)
+        .fromTo('.arch-window', { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.4, ease: 'expo.out' }, 0.55)
+        .from(firstPair, { opacity: 0, y: 40, filter: 'blur(8px)', duration: 1.1, stagger: 0.35 }, 0.9)
+        .from('.arch-caption-0', { opacity: 0, y: 10, duration: 0.8 }, 1.5)
+        .from('.hero-fade', { opacity: 0, y: 20, duration: 0.9, stagger: 0.1 }, 0.6)
 
-                {/* Current perfume name */}
-                <div className={`absolute top-1/2 -left-4 bg-white/90 backdrop-blur-sm rounded-xl px-4 py-2 shadow-md z-20 transition-all duration-500 ${
-                  isTransitioning ? 'opacity-0 -translate-x-2' : 'opacity-100 translate-x-0'
-                }`}>
-                  <p className="text-xs text-dark-400 uppercase tracking-wider">Featured</p>
-                  <p className="text-sm font-semibold text-dark-800">{heroImages[currentImageIndex].name}</p>
-                </div>
-              </div>
+      // Then cycle through the pairs.
+      const cycle = cyclePairs(false)
+      intro.add(cycle.loop, 2.2)
+
+      // Leaving the hero: copy lifts away, the arch recedes.
+      const exit = { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true }
+      gsap.to('.hero-copy', { yPercent: -18, opacity: 0.15, ease: 'none', scrollTrigger: exit })
+      gsap.to('.hero-stage', { yPercent: -10, scale: 0.94, ease: 'none', scrollTrigger: exit })
+
+      // Kinetic marquee: drifts on its own, speeds up with scroll velocity.
+      const drift = gsap.to('.marquee-track', { xPercent: -50, ease: 'none', duration: 60, repeat: -1 })
+      ScrollTrigger.create({
+        trigger: '.marquee',
+        start: 'top bottom',
+        end: 'bottom top',
+        onUpdate: (self) => {
+          gsap.to(drift, {
+            timeScale: 1 + Math.min(Math.abs(self.getVelocity()) / 250, 6),
+            duration: 0.2,
+            overwrite: true,
+            onComplete: () => gsap.to(drift, { timeScale: 1, duration: 1.2, overwrite: true }),
+          })
+        },
+      })
+
+      return cycle.cleanup
+    })
+
+    // Reduced motion still rotates the pairs, as a plain cross-fade with no movement or WebGL.
+    mm.add('(prefers-reduced-motion: reduce)', () => cyclePairs(true).cleanup)
+
+    mm.add(`${MOTION_OK} and (pointer: fine)`, () => {
+      // The arch turns gently toward the cursor; its glow drifts the other way.
+      gsap.set('.arch', { transformPerspective: 1100 })
+      const rotY = gsap.quickTo('.arch', 'rotationY', { duration: 0.9, ease: 'power3' })
+      const rotX = gsap.quickTo('.arch', 'rotationX', { duration: 0.9, ease: 'power3' })
+      const glowX = gsap.quickTo('.arch-glow', 'x', { duration: 1.2, ease: 'power3' })
+      const glowY = gsap.quickTo('.arch-glow', 'y', { duration: 1.2, ease: 'power3' })
+      const onMove = (e) => {
+        const x = e.clientX / window.innerWidth - 0.5
+        const y = e.clientY / window.innerHeight - 0.5
+        rotY(x * 10)
+        rotX(-y * 6)
+        glowX(x * -40)
+        glowY(y * -40)
+      }
+      window.addEventListener('pointermove', onMove, { passive: true })
+
+      // Magnetic CTAs.
+      const cleanups = gsap.utils.toArray('.magnetic').map((el) => {
+        const mx = gsap.quickTo(el, 'x', { duration: 0.5, ease: 'power3' })
+        const my = gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power3' })
+        const move = (e) => {
+          const r = el.getBoundingClientRect()
+          mx((e.clientX - r.left - r.width / 2) * 0.3)
+          my((e.clientY - r.top - r.height / 2) * 0.4)
+        }
+        const leave = () => { mx(0); my(0) }
+        el.addEventListener('pointermove', move)
+        el.addEventListener('pointerleave', leave)
+        return () => {
+          el.removeEventListener('pointermove', move)
+          el.removeEventListener('pointerleave', leave)
+        }
+      })
+
+      return () => {
+        window.removeEventListener('pointermove', onMove)
+        cleanups.forEach((fn) => fn())
+      }
+    })
+  }, { scope: rootRef })
+
+  const scrollRail = (dir) => railRef.current?.scrollBy({ left: dir * railRef.current.clientWidth * 0.8, behavior: 'smooth' })
+
+  return (
+    <div ref={rootRef} className="page-transition">
+      {/* Hero */}
+      <section ref={heroRef} className="relative min-h-dvh overflow-hidden flex items-center pt-24 pb-16 px-6 lg:px-8">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_72%_45%,#4A1712_0%,transparent_55%),radial-gradient(ellipse_at_20%_85%,rgb(201_163_106/0.18)_0%,transparent_50%),linear-gradient(160deg,#1A0D06,#0B0907_70%)]"
+        >
+          {canRunFX && (
+            <Suspense fallback={null}>
+              <HeroSmoke />
+            </Suspense>
+          )}
+        </div>
+        {/* Scrim: keeps the copy at AA over the brightest smoke frame */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none bg-[linear-gradient(90deg,rgb(11_9_7/0.85)_0%,rgb(11_9_7/0.5)_45%,rgb(11_9_7/0.05)_100%),linear-gradient(to_top,var(--color-noir-950)_0%,transparent_30%)]"
+        />
+
+        <div className="relative max-w-7xl mx-auto w-full grid lg:grid-cols-[1.25fr_0.75fr] gap-14 lg:gap-10 items-center">
+          <div className="hero-copy">
+            <h1 className="hero-title font-display font-medium text-[clamp(2.75rem,4.8vw,4.3rem)] leading-[1.06] tracking-[-0.015em] text-ivory-50">
+              <span className="block lg:whitespace-nowrap">Designer icons.</span>
+              <span className="block lg:whitespace-nowrap"><em className="text-gold-300">Middle Eastern</em> alternatives.</span>
+            </h1>
+            <p className="hero-fade mt-8 text-lg md:text-xl text-ivory-300 max-w-[34ch] leading-relaxed">
+              The Arabian perfumes that echo Baccarat Rouge, Althaïr and Angels&apos; Share, for a fraction of the price.
+            </p>
+            <div className="hero-fade mt-10 flex flex-wrap items-center gap-4">
+              <Link to="/browse" className="magnetic btn-primary group">
+                Explore the collection
+                <ArrowRightIcon size={18} weight="bold" className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+              </Link>
+              <Link to="/dupe-finder" className="magnetic glass inline-flex items-center gap-2 px-6 py-3 rounded-full font-medium text-ivory-50 hover:text-gold-300">
+                Find a dupe
+              </Link>
             </div>
           </div>
+
+          {/* The arch: designer original and its dupe, side by side in the lit window */}
+          <figure className="hero-stage relative mx-auto w-full max-w-[300px] sm:max-w-[360px] lg:max-w-[420px]">
+            <div aria-hidden="true" className="arch-glow absolute -inset-[30%] rounded-full bg-[radial-gradient(closest-side,rgb(227_200_147/0.3),transparent)] blur-2xl" />
+            <div className="arch relative aspect-400/560">
+              <div className="arch-window absolute inset-0 bg-[radial-gradient(ellipse_at_50%_35%,var(--color-ivory-50),var(--color-ivory-300)_80%)]">
+                {pairs.map((pair, i) => (
+                  <div key={pair._id} className="arch-pair absolute inset-x-[10%] top-[34%] bottom-[3%] grid grid-cols-2 gap-3 items-end">
+                    {[pair.original, pair.dupe].map((p) => (
+                      <img
+                        key={p._id}
+                        src={p.imageUrl}
+                        alt={i === 0 ? p.name : ''}
+                        className="w-full h-full object-contain object-bottom mix-blend-multiply scale-125 origin-bottom"
+                        style={{ opacity: i === 0 ? 1 : 0 }}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
+              {canRunFX ? (
+                <Suspense fallback={<StaticArch />}>
+                  <LiquidArch running={heroInView} />
+                </Suspense>
+              ) : (
+                <StaticArch />
+              )}
+            </div>
+            <figcaption className="relative mt-7 grid text-center">
+              {pairs.map((pair, i) => (
+                <Link
+                  key={pair._id}
+                  to={`/perfume/${pair.dupe._id}`}
+                  className={`arch-caption arch-caption-${i} group [grid-area:1/1]`}
+                  style={i === 0 ? undefined : { opacity: 0, visibility: 'hidden' }}
+                >
+                  <span className="block font-display text-2xl text-ivory-50">
+                    {pair.original.name} <span className="text-gold-400">/</span>{' '}
+                    <span className="underline decoration-gold-500/40 underline-offset-4 group-hover:decoration-gold-300">{pair.dupe.name}</span>
+                  </span>
+                  <span className="block mt-1 text-sm text-ivory-400">
+                    {pair.similarityScore}% match, about {pair.priceComparison?.savings}% cheaper
+                  </span>
+                </Link>
+              ))}
+            </figcaption>
+          </figure>
         </div>
       </section>
 
-      {/* Marquee Banner */}
-      <section className="bg-dark-800 py-4 overflow-hidden">
-        <div className="animate-marquee flex whitespace-nowrap">
-          {[...marqueeItems, ...marqueeItems].map((item, index) => (
-            <span key={index} className="mx-8 text-white/90 uppercase tracking-widest text-sm font-medium flex items-center gap-3">
-              {item}
-              <span className="text-accent-500">✦</span>
+      {/* Kinetic marquee of the catalog's most-used notes */}
+      <section aria-label="Notes in the catalog" className="marquee border-y border-noir-600/60 py-8 overflow-hidden">
+        <div className="marquee-track flex w-max">
+          {[...topNotes, ...topNotes].map((note, i) => (
+            <span
+              key={i}
+              aria-hidden={i >= topNotes.length}
+              className="font-display italic text-4xl md:text-6xl text-ivory-100/90 whitespace-nowrap px-8 md:px-12 flex items-center gap-16 md:gap-24"
+            >
+              {note}
+              <span className="block w-2 h-2 rotate-45 bg-gold-400" aria-hidden="true" />
             </span>
           ))}
         </div>
       </section>
 
-      {/* Search Section */}
-      <section className="py-16 px-6 lg:px-8 bg-white">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="section-title mb-4">
-            Find Your <span className="italic text-accent-500">Perfect</span> Dupe
+      {/* Trending 2026 */}
+      <section id="trending" className="py-28 md:py-36 scroll-mt-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-end justify-between gap-6 mb-12">
+          <div className="reveal max-w-2xl">
+            <h2 className="section-title">Trending in <em className="text-gold-300">2026</em></h2>
+            <p className="section-subtitle mt-5">Viral Arabian gourmands, the pistachio and berry launches, and the dupes people are asking about.</p>
+          </div>
+          <div className="hidden md:flex gap-2 shrink-0">
+            <button onClick={() => scrollRail(-1)} className="btn-icon" aria-label="Scroll trending left">
+              <CaretLeftIcon size={20} aria-hidden="true" />
+            </button>
+            <button onClick={() => scrollRail(1)} className="btn-icon" aria-label="Scroll trending right">
+              <CaretRightIcon size={20} aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+        <div
+          ref={railRef}
+          role="region"
+          aria-label="Trending 2026 fragrances"
+          tabIndex={0}
+          className="flex gap-5 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-6 px-6 scroll-px-6 lg:px-[max(2rem,calc((100vw-80rem)/2+2rem))] lg:scroll-px-[max(2rem,calc((100vw-80rem)/2+2rem))]"
+        >
+          {trending.map((perfume) => (
+            <PerfumeCard key={perfume._id} perfume={perfume} className="reveal snap-start shrink-0 w-[250px] md:w-[280px]" />
+          ))}
+        </div>
+      </section>
+
+      <PairExplorer />
+
+      <FamilyIndex />
+
+      {/* Search */}
+      <section className="relative overflow-hidden px-6 lg:px-8 py-28 md:py-36 text-center border-t border-noir-600/60">
+        <div className="relative max-w-3xl mx-auto">
+          <h2 className="reveal section-title">Find your <em className="text-gold-300">perfect</em> dupe</h2>
+          <p className="reveal section-subtitle mt-5 mb-10">Search any designer or niche fragrance.</p>
+          <div className="reveal">
+            <SearchBar />
+          </div>
+        </div>
+      </section>
+
+      {/* Closing */}
+      <section className="relative overflow-hidden px-6 lg:px-8 pt-28 md:pt-36 pb-32 text-center">
+        <svg viewBox="0 0 400 560" aria-hidden="true" className="absolute left-1/2 top-10 -translate-x-1/2 h-[120%] w-auto text-gold-400/6">
+          <path fill="currentColor" fillRule="evenodd" d={ARCH_FRAME} />
+        </svg>
+        <div className="reveal relative max-w-3xl mx-auto">
+          <h2 className="font-display font-medium text-5xl md:text-7xl leading-[1.05] pb-1 text-ivory-50 mb-6">
+            Your signature scent, <em className="text-gold-300">for less.</em>
           </h2>
-          <p className="section-subtitle mb-8">
-            Search for any designer fragrance and discover affordable alternatives
-          </p>
-          <SearchBar />
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      <section className="py-20 px-6 lg:px-8 bg-cream-100">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
-            <div>
-              <h2 className="section-title mb-3">
-                Explore by <span className="italic text-accent-500">Category</span>
-              </h2>
-              <p className="section-subtitle">Discover scents that match your style</p>
-            </div>
-            <Link to="/browse" className="btn-ghost mt-4 md:mt-0">
-              View All
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredCategories.map((category) => (
-              <Link
-                key={category.name}
-                to={`/browse?category=${category.name.toLowerCase()}`}
-                className="group relative bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-cream-100 to-cream-200 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative z-10">
-                  <span className="text-5xl mb-4 block group-hover:scale-110 transition-transform duration-300">{category.icon}</span>
-                  <h3 className="text-xl font-display font-semibold text-dark-800 mb-1">{category.name}</h3>
-                  <p className="text-sm text-dark-400">{category.description}</p>
-                  <div className="mt-4 flex items-center text-accent-500 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                    Explore
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Popular Dupes Section */}
-      <section className="py-20 px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="section-title mb-3">
-              Popular <span className="italic text-accent-500">Dupe</span> Finds
-            </h2>
-            <p className="section-subtitle">Save big with these community-verified alternatives</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {popularDupes.map((item, index) => (
-              <div key={index} className="card p-8 text-center group">
-                <div className="mb-6">
-                  <span className="badge-success font-semibold">Save {item.savings}</span>
-                </div>
-                
-                <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-cream-100 to-cream-200 flex items-center justify-center group-hover:scale-110 transition-transform overflow-hidden">
-                  <img src={item.image} alt={item.original} className="w-full h-full object-cover" />
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-xs text-dark-400 uppercase tracking-wider mb-1">Looking for</p>
-                    <p className="font-display font-semibold text-dark-800">{item.original}</p>
-                  </div>
-                  
-                  <div className="flex justify-center">
-                    <div className="w-8 h-8 rounded-full bg-accent-100 flex items-center justify-center">
-                      <svg className="w-4 h-4 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                      </svg>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-xs text-dark-400 uppercase tracking-wider mb-1">Try instead</p>
-                    <p className="font-display font-semibold text-accent-500">{item.dupe}</p>
-                  </div>
-                </div>
-
-                <Link 
-                  to="/dupe-finder" 
-                  className="mt-6 inline-flex items-center text-sm text-dark-500 hover:text-accent-500 transition-colors"
-                >
-                  View Details
-                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Link to="/dupe-finder" className="btn-primary">
-              Find Your Dupe
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Features/Why Section */}
-      <section className="py-20 px-6 lg:px-8 bg-gradient-to-br from-cream-100 to-accent-50/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="section-title mb-3">
-              Why <span className="italic text-accent-500">SouqIntel</span>?
-            </h2>
-            <p className="section-subtitle">Your trusted source for Middle Eastern fragrances</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: (
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                ),
-                title: 'Save Up to 95%',
-                description: 'Find quality alternatives at a fraction of the designer price',
-              },
-              {
-                icon: (
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                ),
-                title: 'Verified Dupes',
-                description: 'Community-tested and expert-verified recommendations',
-              },
-              {
-                icon: (
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                ),
-                title: 'Authentic Middle Eastern',
-                description: 'Specializing in genuine Middle Eastern fragrances',
-              },
-            ].map((feature, index) => (
-              <div key={index} className="bg-white rounded-3xl p-8 shadow-sm hover:shadow-lg transition-all duration-300 group">
-                <div className="w-14 h-14 rounded-2xl bg-accent-100 text-accent-500 flex items-center justify-center mb-6 group-hover:bg-accent-500 group-hover:text-white transition-colors">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-display font-semibold text-dark-800 mb-3">{feature.title}</h3>
-                <p className="text-dark-500 leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Stats Row */}
-          <div className="mt-16 grid grid-cols-3 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <p className="text-4xl md:text-5xl font-display font-bold text-dark-800">{stat.value}</p>
-                <p className="text-dark-400 mt-2">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-6 lg:px-8 bg-dark-800">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-display font-semibold text-white mb-4">
-            Ready to find your signature scent?
-          </h2>
-          <p className="text-dark-300 text-lg mb-8 max-w-2xl mx-auto">
-            Explore our curated collection of Middle Eastern fragrances and discover affordable alternatives to luxury perfumes.
+          <p className="text-ivory-400 text-lg mb-10">
+            Search {fallbackPerfumes.length} fragrances and {fallbackDupeRelations.length} matched pairs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/browse" className="btn-primary">
-              Start Exploring
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
+            <Link to="/browse" className="magnetic btn-primary justify-center">
+              Explore the collection
+              <ArrowRightIcon size={18} weight="bold" aria-hidden="true" />
             </Link>
-            <Link to="/dupe-finder" className="btn-primary-outline !border-white !text-white hover:!bg-white hover:!text-dark-800">
-              Find a Dupe
+            <Link to="/dupe-finder" className="magnetic btn-primary-outline justify-center">
+              Find a dupe
             </Link>
           </div>
         </div>

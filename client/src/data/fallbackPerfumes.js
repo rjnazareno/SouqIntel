@@ -347,6 +347,7 @@ export const fallbackPerfumes = [
   },
   {
     _id: '9pm',
+    trending: true,
     name: '9PM',
     brand: { _id: 'afnan', name: 'Afnan', origin: 'UAE', type: 'arabian' },
     type: 'arabian',

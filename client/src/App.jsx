@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import ChatBot from './components/ChatBot'
@@ -8,12 +9,22 @@ import DupeFinder from './pages/DupeFinder'
 import PerfumeDetail from './pages/PerfumeDetail'
 import './index.css'
 
+// Start each page at the top (BrowserRouter keeps the previous scroll position).
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
+
 function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-gradient-to-br from-amber-50 via-white to-orange-50">
+      <ScrollToTop />
+      <div className="grain min-h-screen flex flex-col bg-noir-950 text-ivory-100">
         <Navbar />
-        <main className="flex-grow">
+        <main className="grow">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/browse" element={<Browse />} />
